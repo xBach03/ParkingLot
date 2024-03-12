@@ -5,11 +5,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register"
+    tools:context=".RegisterActivity"
     android:background="@drawable/register_login">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
@@ -23,46 +23,69 @@
         app:layout_constraintVertical_bias="0.19" />
 
     <EditText
-        android:id="@+id/userName"
+        android:id="@+id/userNameReg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/input_bg"
+        android:drawableLeft="@drawable/user"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:inputType="text"
-        android:textColorHint="#000000"
         android:hint="Username"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/register" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/passwordReg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="@drawable/input_bg"
+        android:drawableLeft="@drawable/security"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textColorHint="#000000"
-        app:layout_constraintEnd_toEndOf="@+id/userName"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/userNameReg"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/userName"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
+        app:layout_constraintStart_toStartOf="@+id/userNameReg"
+        app:layout_constraintTop_toBottomOf="@+id/userNameReg" />
 
     <EditText
-        android:id="@+id/cfPassword"
+        android:id="@+id/cfPasswordReg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="@drawable/input_bg"
+        android:drawableLeft="@drawable/security"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:inputType="textPassword"
-        android:textColorHint="#000000"
         android:hint="Confirm Password"
-        app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        android:inputType="textPassword"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/passwordReg"
+        app:layout_constraintStart_toStartOf="@+id/passwordReg"
+        app:layout_constraintTop_toBottomOf="@+id/passwordReg" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -70,9 +93,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Register"
-        app:layout_constraintEnd_toEndOf="@+id/cfPassword"
-        app:layout_constraintStart_toStartOf="@+id/cfPassword"
-        app:layout_constraintTop_toBottomOf="@+id/cfPassword" />
+        app:layout_constraintEnd_toEndOf="@+id/cfPasswordReg"
+        app:layout_constraintStart_toStartOf="@+id/cfPasswordReg"
+        app:layout_constraintTop_toBottomOf="@+id/cfPasswordReg" />
 
     <TextView
         android:id="@+id/textView4"
