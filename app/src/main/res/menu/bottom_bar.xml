@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/camera"
-        android:title="Camera"
-        android:icon="@drawable/camera"
-        />
+
     <item android:id="@+id/barChart"
-        android:title="Chart"
+        android:title="Statistics"
         android:icon="@drawable/barchart"
         />
     <item android:id="@+id/historyManager"
         android:title="Manager"
         android:icon="@drawable/historymanager"
+        />
+    <item android:id="@+id/camera"
+        android:title="Camera"
+        android:icon="@drawable/camera"
         />
     <item android:id="@+id/reservation"
         android:title="Reservation"
