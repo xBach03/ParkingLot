@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/barChart"
+    <item android:id="@+id/statistic"
         android:title="Statistics"
         android:icon="@drawable/barchart"
         />
@@ -18,7 +18,7 @@
         android:title="Reservation"
         android:icon="@drawable/reservation"
         />
-    <item android:id="@+id/creditCard"
+    <item android:id="@+id/payment"
         android:title="Payment"
         android:icon="@drawable/creditcard"
         />
