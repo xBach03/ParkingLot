@@ -1,5 +1,8 @@
 package com.example.parkinglot;
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.parkinglot.database.DatabaseHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +29,8 @@ public class StatisticsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView text;
+    private DatabaseHelper dbHelper;
 
     public StatisticsFragment() {
         // Required empty public constructor
@@ -53,6 +61,16 @@ public class StatisticsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        dbHelper = new DatabaseHelper(requireContext());
+//        SQLiteDatabase db = dbHelper.getReadableDatabase();
+//        Cursor cursor = db.rawQuery("SELECT * FROM user", null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+//                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
+//                text.setText(id + " - " + name);
+//            } while (cursor.moveToNext());
+//        }
     }
 
     @Override

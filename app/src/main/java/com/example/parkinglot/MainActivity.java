@@ -11,17 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.parkinglot.database.DatabaseHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView Navigator;
+    private DatabaseHelper DbHelper;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Navigator = findViewById(R.id.btmNavigation);
         LoadFragment(new StatisticsFragment());
+        Navigator = findViewById(R.id.btmNavigation);
         Navigator.setOnItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if(id == R.id.historyManager) {
