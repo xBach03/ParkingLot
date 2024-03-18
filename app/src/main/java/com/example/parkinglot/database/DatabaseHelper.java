@@ -1,12 +1,11 @@
 package com.example.parkinglot.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
-import com.example.parkinglot.StatisticsFragment;
+import com.example.parkinglot.database.entities.User;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
@@ -17,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String USER_ID = "id";
     private static final String USER_USERNAME = "username";
     private static final String USER_PASSWORD = "password";
+    // Create user table string
     public static final String CreateTableUser = "CREATE TABLE " + TABLE_USER +
             "(" + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USER_USERNAME + " TEXT, " + USER_PASSWORD + " TEXT)";
     public DatabaseHelper(Context context) {
@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // Oncreate -> create table user
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CreateTableUser);

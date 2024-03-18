@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -29,7 +31,7 @@ public class StatisticsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private TextView text;
+    TextView text;
     private DatabaseHelper dbHelper;
 
     public StatisticsFragment() {
@@ -61,22 +63,39 @@ public class StatisticsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        dbHelper = new DatabaseHelper(requireContext());
+//        dbHelper = new DatabaseHelper(requireContext());
 //        SQLiteDatabase db = dbHelper.getReadableDatabase();
 //        Cursor cursor = db.rawQuery("SELECT * FROM user", null);
 //        if (cursor.moveToFirst()) {
-//            do {
-//                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
-//                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
-//                text.setText(id + " - " + name);
-//            } while (cursor.moveToNext());
+//            @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+//            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+//            System.out.println("id: " + id + " name: " + name);
 //        }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_statistics, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
+
+        // Find the TextView within the inflated layout
+        TextView text = rootView.findViewById(R.id.Test);
+
+        // Access database and set text
+        dbHelper = new DatabaseHelper(requireContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM user", null);
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+            text.setText(id + " - " + name);
+        }
+
+        // Close the cursor and return the rootView
+        cursor.close();
+        return rootView;
     }
 }

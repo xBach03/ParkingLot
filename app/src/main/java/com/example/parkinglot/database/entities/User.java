@@ -1,4 +1,4 @@
-package com.example.parkinglot.database;
+package com.example.parkinglot.database.entities;
 
 public class User {
     private int Id;
