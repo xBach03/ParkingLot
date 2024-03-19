@@ -22,10 +22,7 @@ public class UserDao {
         db = database;
     }
     // Insert user into table
-    public boolean insertUser(User user, Context context) {
-        DatabaseHelper helper = new DatabaseHelper(context);
-        db = helper.getWritableDatabase();
-
+    public boolean insertUser(User user) {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
@@ -57,9 +54,7 @@ public class UserDao {
         return insert != -1;
     }
     // Check for login information, if an account is registered
-    public boolean userLoginCheck(User user, Context context) {
-        DatabaseHelper helper = new DatabaseHelper(context);
-        db = helper.getReadableDatabase();
+    public boolean userLoginCheck(User user) {
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.

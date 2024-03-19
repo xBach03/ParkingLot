@@ -15,6 +15,14 @@ import com.example.parkinglot.database.entities.Reservation;
 import com.example.parkinglot.database.entities.User;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private static DatabaseHelper instance;
+    // Singleton pattern
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
+    }
     public static final String DatabaseName = "LotParker";
     public static final int DatabaseVersion = 1;
 
@@ -25,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             UserDao.FeedEntry.USER_PASSWORD + " TEXT);";
     public static final String deleteTableUser = "DROP TABLE IF EXISTS " + UserDao.FeedEntry.TABLE_USER;
     public static final String createTableVehicle = "CREATE TABLE " + VehicleDao.FeedEntry.TABLE_VEHICLE + "( " +
-            VehicleDao.FeedEntry.VEHICLE_ID + " INTEGER PRIMARY KEY AUTO INCREMENT, " +
+            VehicleDao.FeedEntry.VEHICLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             VehicleDao.FeedEntry.VEHICLE_LICENSEPLATE + " TEXT UNIQUE, " +
             VehicleDao.FeedEntry.VEHICLE_COLOR + " TEXT, " +
             VehicleDao.FeedEntry.VEHICLE_TYPE + " TEXT, " +
@@ -56,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "FOREIGN KEY(" + ParkingspaceDao.FeedEntry.PARKING_VEHICLEID + ") REFERENCES " +
             VehicleDao.FeedEntry.TABLE_VEHICLE + "(" + VehicleDao.FeedEntry.VEHICLE_ID +"));";
 
+
     public DatabaseHelper(Context context) {
         super(context, DatabaseName, null, DatabaseVersion);
     }
@@ -71,6 +80,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createTableUser);
+        db.execSQL(createTableVehicle);
+        db.execSQL(createTableParkingspace);
+        db.execSQL(createTableReservation);
+        db.execSQL(createTablePayment);
     }
     public void setDeleteTableUser(SQLiteDatabase db){
         db.execSQL(deleteTableUser);

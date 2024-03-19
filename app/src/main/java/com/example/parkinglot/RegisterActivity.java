@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,12 +21,24 @@ import com.example.parkinglot.database.entities.User;
 
 public class RegisterActivity extends AppCompatActivity {
     private SQLiteDatabase db;
+    private DatabaseHelper dbHelper;
+    private TextView LoginText;
     private Button BtnRegister;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        dbHelper = DatabaseHelper.getInstance(this);
+        db = dbHelper.getWritableDatabase();
+        LoginText = findViewById(R.id.loginText);
+        LoginText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+        // Set onclick for register button
         BtnRegister = findViewById(R.id.btnRegister);
         BtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,7 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = UserReg.getText().toString();
                 String password = PasswordReg.getText().toString();
                 String confirmpassword = CfPasswordReg.getText().toString();
-                boolean check = userDao.insertUser(new User(username, confirmpassword), RegisterActivity.this);
+                // Check if username already exists
+                boolean check = userDao.insertUser(new User(username, confirmpassword));
                 if(password.equals(confirmpassword) && check) {
                     Toast.makeText(RegisterActivity.this, "You have registered as " + username, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent();
