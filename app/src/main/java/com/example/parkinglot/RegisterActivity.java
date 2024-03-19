@@ -33,16 +33,18 @@ public class RegisterActivity extends AppCompatActivity {
                 EditText UserReg = findViewById(R.id.userNameReg);
                 EditText PasswordReg = findViewById(R.id.passwordReg);
                 EditText CfPasswordReg = findViewById(R.id.cfPasswordReg);
-                UserDao user = new UserDao(db);
+                UserDao userDao = new UserDao(db);
                 String username = UserReg.getText().toString();
                 String password = PasswordReg.getText().toString();
                 String confirmpassword = CfPasswordReg.getText().toString();
-                if(password.equals(confirmpassword)) {
-                    user.insertUser(new User(username, confirmpassword), RegisterActivity.this);
+                boolean check = userDao.insertUser(new User(username, confirmpassword), RegisterActivity.this);
+                if(password.equals(confirmpassword) && check) {
                     Toast.makeText(RegisterActivity.this, "You have registered as " + username, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent();
                     i.setClass(RegisterActivity.this, MainActivity.class);
                     startActivity(i);
+                } else if(!check) {
+                    Toast.makeText(RegisterActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(RegisterActivity.this, "Confirmation password does not match original one", Toast.LENGTH_SHORT).show();
                 }

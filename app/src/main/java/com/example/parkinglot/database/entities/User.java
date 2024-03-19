@@ -1,6 +1,7 @@
 package com.example.parkinglot.database.entities;
 
 public class User {
+    // Primary key
     private int Id;
     private String UserName;
     private String Password;

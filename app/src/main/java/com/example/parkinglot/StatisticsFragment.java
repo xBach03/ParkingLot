@@ -77,10 +77,8 @@ public class StatisticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
-
         // Find the TextView within the inflated layout
         TextView text = rootView.findViewById(R.id.Test);
 
@@ -93,7 +91,6 @@ public class StatisticsFragment extends Fragment {
             String name = cursor.getString(cursor.getColumnIndexOrThrow("username"));
             text.setText(id + " - " + name);
         }
-
         // Close the cursor and return the rootView
         cursor.close();
         return rootView;

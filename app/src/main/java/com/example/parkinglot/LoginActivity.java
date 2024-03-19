@@ -32,12 +32,14 @@ public class LoginActivity extends AppCompatActivity {
                 String password = passwordLogin.getText().toString();
                 User User = new User(user, password);
                 UserDao userDao = new UserDao(db);
-                boolean insertion = userDao.insertUser(User, LoginActivity.this);
-                if(insertion) {
+                boolean loginCheck = userDao.userLoginCheck(User, LoginActivity.this);
+                if(loginCheck) {
                     Toast.makeText(LoginActivity.this, "You have login as " + user, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent();
                     i.setClass(LoginActivity.this, MainActivity.class);
                     startActivity(i);
+                } else {
+                    Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
