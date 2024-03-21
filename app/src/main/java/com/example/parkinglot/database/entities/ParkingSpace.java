@@ -14,6 +14,11 @@ public class ParkingSpace {
         VehicleId = vehicleId;
     }
 
+    public ParkingSpace(boolean availability, String area) {
+        Availability = availability;
+        Area = area;
+    }
+
     public int getParkingId() {
         return ParkingId;
     }

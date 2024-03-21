@@ -1,5 +1,6 @@
 package com.example.parkinglot.database;
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,9 +11,10 @@ import com.example.parkinglot.database.daos.PaymentDao;
 import com.example.parkinglot.database.daos.ReservationDao;
 import com.example.parkinglot.database.daos.UserDao;
 import com.example.parkinglot.database.daos.VehicleDao;
-import com.example.parkinglot.database.entities.Payment;
-import com.example.parkinglot.database.entities.Reservation;
-import com.example.parkinglot.database.entities.User;
+import com.example.parkinglot.database.entities.ParkingSpace;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper instance;
@@ -64,7 +66,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "FOREIGN KEY(" + ParkingspaceDao.FeedEntry.PARKING_VEHICLEID + ") REFERENCES " +
             VehicleDao.FeedEntry.TABLE_VEHICLE + "(" + VehicleDao.FeedEntry.VEHICLE_ID +"));";
 
-
     public DatabaseHelper(Context context) {
         super(context, DatabaseName, null, DatabaseVersion);
     }
@@ -84,8 +85,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableParkingspace);
         db.execSQL(createTableReservation);
         db.execSQL(createTablePayment);
+        ParkingspaceDao parker = new ParkingspaceDao(db);
+        long result = parker.insertParkingspace();
     }
     public void setDeleteTableUser(SQLiteDatabase db){
         db.execSQL(deleteTableUser);
     }
+
 }
