@@ -4,19 +4,22 @@ public class ParkingSpace {
     // Primary key
     private int ParkingId;
     private boolean Availability;
+    private String VehicleType;
     private String Area;
     // Foreign key -> Vehicle
     private int VehicleId;
 
-    public ParkingSpace(boolean availability, String area, int vehicleId) {
+    public ParkingSpace(boolean availability, String area, int vehicleId, String vehicleType) {
         Availability = availability;
         Area = area;
         VehicleId = vehicleId;
+        VehicleType = vehicleType;
     }
 
-    public ParkingSpace(boolean availability, String area) {
+    public ParkingSpace(boolean availability, String area, String vehicleType) {
         Availability = availability;
         Area = area;
+        VehicleType = vehicleType;
     }
 
     public int getParkingId() {

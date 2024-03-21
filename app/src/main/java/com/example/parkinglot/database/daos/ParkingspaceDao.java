@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class ParkingspaceDao {
     private SQLiteDatabase db;
@@ -20,6 +21,7 @@ public class ParkingspaceDao {
         public static final String PARKING_AVAILABILITY = "availability";
         public static final String PARKING_AREA = "area";
         public static final String PARKING_VEHICLEID = "vehicleId";
+        public static final String PARKING_VEHICLETYPE = "vehicleType";
 
     }
     public ParkingspaceDao(SQLiteDatabase db) {
@@ -31,6 +33,8 @@ public class ParkingspaceDao {
         mp.put("D3", 10);
         mp.put("C7", 15);
         mp.put("D8", 20);
+        Random random = new Random();
+        String[] vehicleTypes = {"Car", "Motorcycle", "Bike"};
         long row = 0;
         for(String c : mp.keySet()) {
             int num = mp.get(c);
@@ -38,6 +42,7 @@ public class ParkingspaceDao {
                 data.put(FeedEntry.PARKING_AREA, c);
                 data.put(FeedEntry.PARKING_VEHICLEID, "null");
                 data.put(FeedEntry.PARKING_AVAILABILITY, true);
+                data.put(FeedEntry.PARKING_VEHICLETYPE, vehicleTypes[random.nextInt(vehicleTypes.length)]);
                 row = db.insert(FeedEntry.TABLE_PARKING, null, data);
             }
         }
@@ -49,7 +54,8 @@ public class ParkingspaceDao {
         // Columns to query:
         String[] projection = {
                 FeedEntry.PARKING_AREA,
-                FeedEntry.PARKING_AVAILABILITY
+                FeedEntry.PARKING_AVAILABILITY,
+                FeedEntry.PARKING_VEHICLETYPE
         };
 
         // "= ?" -> query all available spaces (availability = 1)
@@ -74,7 +80,8 @@ public class ParkingspaceDao {
                 do {
                     String parkingArea = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AREA));
                     boolean availability = cursor.getInt(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AVAILABILITY)) == 1;
-                    ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea);
+                    String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_VEHICLETYPE));
+                    ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType);
                     // Add ParkingSpace object to the list
                     parkingSpaces.add(parkingSpace);
                 } while (cursor.moveToNext());

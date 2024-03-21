@@ -62,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ParkingspaceDao.FeedEntry.PARKING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ParkingspaceDao.FeedEntry.PARKING_AREA + " TEXT, " +
             ParkingspaceDao.FeedEntry.PARKING_AVAILABILITY + " TEXT, " +
+            ParkingspaceDao.FeedEntry.PARKING_VEHICLETYPE + " TEXT, " +
             ParkingspaceDao.FeedEntry.PARKING_VEHICLEID + " TEXT, " +
             "FOREIGN KEY(" + ParkingspaceDao.FeedEntry.PARKING_VEHICLEID + ") REFERENCES " +
             VehicleDao.FeedEntry.TABLE_VEHICLE + "(" + VehicleDao.FeedEntry.VEHICLE_ID +"));";
