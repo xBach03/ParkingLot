@@ -22,6 +22,15 @@
             android:textSize="20dp"
             android:textColor="#6C22A6"
             />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/parkingRecycler"
+            app:layout_constraintTop_toBottomOf="@id/reservator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

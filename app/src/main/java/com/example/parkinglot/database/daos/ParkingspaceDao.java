@@ -22,6 +22,7 @@ public class ParkingspaceDao {
         public static final String PARKING_AREA = "area";
         public static final String PARKING_VEHICLEID = "vehicleId";
         public static final String PARKING_VEHICLETYPE = "vehicleType";
+        public static final String PARKING_SPOT = "parkingSpot";
 
     }
     public ParkingspaceDao(SQLiteDatabase db) {
@@ -42,12 +43,15 @@ public class ParkingspaceDao {
                 data.put(FeedEntry.PARKING_AREA, c);
                 data.put(FeedEntry.PARKING_VEHICLEID, "null");
                 data.put(FeedEntry.PARKING_AVAILABILITY, true);
+                data.put(FeedEntry.PARKING_SPOT, i + 100);
                 data.put(FeedEntry.PARKING_VEHICLETYPE, vehicleTypes[random.nextInt(vehicleTypes.length)]);
                 row = db.insert(FeedEntry.TABLE_PARKING, null, data);
             }
         }
         return row;
     }
+
+    // Get parking spaces
     public List<ParkingSpace> getAvailableSpaces() {
         List<ParkingSpace> parkingSpaces = new ArrayList<>();
 
@@ -55,6 +59,7 @@ public class ParkingspaceDao {
         String[] projection = {
                 FeedEntry.PARKING_AREA,
                 FeedEntry.PARKING_AVAILABILITY,
+                FeedEntry.PARKING_SPOT,
                 FeedEntry.PARKING_VEHICLETYPE
         };
 
@@ -81,7 +86,8 @@ public class ParkingspaceDao {
                     String parkingArea = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AREA));
                     boolean availability = cursor.getInt(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AVAILABILITY)) == 1;
                     String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_VEHICLETYPE));
-                    ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType);
+                    String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_SPOT));
+                    ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType, parkingSpot);
                     // Add ParkingSpace object to the list
                     parkingSpaces.add(parkingSpace);
                 } while (cursor.moveToNext());

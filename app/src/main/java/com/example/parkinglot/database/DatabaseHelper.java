@@ -1,7 +1,6 @@
 package com.example.parkinglot.database;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,10 +10,6 @@ import com.example.parkinglot.database.daos.PaymentDao;
 import com.example.parkinglot.database.daos.ReservationDao;
 import com.example.parkinglot.database.daos.UserDao;
 import com.example.parkinglot.database.daos.VehicleDao;
-import com.example.parkinglot.database.entities.ParkingSpace;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper instance;
@@ -26,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return instance;
     }
     public static final String DatabaseName = "LotParker";
-    public static final int DatabaseVersion = 1;
+    public static final int DatabaseVersion = 5;
 
     // Create user table string
     public static final String createTableUser = "CREATE TABLE " + UserDao.FeedEntry.TABLE_USER + "( " +
@@ -64,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ParkingspaceDao.FeedEntry.PARKING_AVAILABILITY + " TEXT, " +
             ParkingspaceDao.FeedEntry.PARKING_VEHICLETYPE + " TEXT, " +
             ParkingspaceDao.FeedEntry.PARKING_VEHICLEID + " TEXT, " +
+            ParkingspaceDao.FeedEntry.PARKING_SPOT + " TEXT, " +
             "FOREIGN KEY(" + ParkingspaceDao.FeedEntry.PARKING_VEHICLEID + ") REFERENCES " +
             VehicleDao.FeedEntry.TABLE_VEHICLE + "(" + VehicleDao.FeedEntry.VEHICLE_ID +"));";
 
@@ -75,6 +71,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + UserDao.FeedEntry.TABLE_USER);
+        db.execSQL("DROP TABLE IF EXISTS " + VehicleDao.FeedEntry.TABLE_VEHICLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ParkingspaceDao.FeedEntry.TABLE_PARKING);
+        db.execSQL("DROP TABLE IF EXISTS " + ReservationDao.FeedEntry.TABLE_RESERVATION);
+        db.execSQL("DROP TABLE IF EXISTS " + PaymentDao.FeedEntry.TABLE_PAYMENT);
         onCreate(db);
     }
 

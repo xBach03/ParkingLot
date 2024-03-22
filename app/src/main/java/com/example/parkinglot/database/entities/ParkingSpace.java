@@ -5,6 +5,7 @@ public class ParkingSpace {
     private int ParkingId;
     private boolean Availability;
     private String VehicleType;
+    private String ParkingSpot;
     private String Area;
     // Foreign key -> Vehicle
     private int VehicleId;
@@ -16,14 +17,23 @@ public class ParkingSpace {
         VehicleType = vehicleType;
     }
 
-    public ParkingSpace(boolean availability, String area, String vehicleType) {
+    public ParkingSpace(boolean availability, String area, String vehicleType, String parkingSpot) {
         Availability = availability;
         Area = area;
         VehicleType = vehicleType;
+        ParkingSpot = parkingSpot;
     }
 
     public int getParkingId() {
         return ParkingId;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        VehicleType = vehicleType;
+    }
+
+    public void setParkingSpot(String parkingSpot) {
+        ParkingSpot = parkingSpot;
     }
 
     public void setParkingId(int parkingId) {
@@ -52,5 +62,12 @@ public class ParkingSpace {
 
     public int getVehicleId() {
         return VehicleId;
+    }
+    public String getVehicleType() {
+        return VehicleType;
+    }
+
+    public String getParkingSpot() {
+        return ParkingSpot;
     }
 }
