@@ -76,7 +76,7 @@ public class ReservationFragment extends Fragment {
         dbHelper = new DatabaseHelper(requireContext());
         db = dbHelper.getWritableDatabase();
         ParkingspaceDao parkDao = new ParkingspaceDao(db);
-        ParkingAdapter parkingAdapter = new ParkingAdapter(parkDao.getAvailableSpaces());
+        ParkingAdapter parkingAdapter = new ParkingAdapter(parkDao.getAvailableSlots());
         recyclerView.setAdapter(parkingAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);

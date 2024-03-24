@@ -3,6 +3,7 @@ package com.example.parkinglot;
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.parkinglot.database.DatabaseHelper;
+import com.example.parkinglot.database.daos.ParkingspaceDao;
+import com.example.parkinglot.database.entities.ParkingSpace;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,8 +46,8 @@ public class StatisticsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    TextView text;
     private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
 
     public StatisticsFragment() {
         // Required empty public constructor
@@ -80,19 +95,49 @@ public class StatisticsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
         // Find the TextView within the inflated layout
-        TextView text = rootView.findViewById(R.id.Test);
+        BarChart barChart = rootView.findViewById(R.id.barChart);
+        barChart.getAxisRight().setDrawLabels(false);
 
-        // Access database and set text
         dbHelper = new DatabaseHelper(requireContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM user", null);
-        if (cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow("username"));
-            text.setText(id + " - " + name);
-        }
-        // Close the cursor and return the rootView
-        cursor.close();
+        db = dbHelper.getWritableDatabase();
+        ParkingspaceDao parkingDao = new ParkingspaceDao(db);
+
+        // Query for all type of slots
+        List<ParkingSpace> availableSlots = parkingDao.getAvailableSlots();
+        List<ParkingSpace> reservedSlots = parkingDao.getReservedSlots();
+        List<ParkingSpace> parkedSlots = parkingDao.getParkedSlots();
+        List<String> type = Arrays.asList("Parked", "Available", "Reserved");
+
+        // Configure entries for chart
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0, availableSlots.size()));
+        entries.add(new BarEntry(1, reservedSlots.size()));
+        entries.add(new BarEntry(2, parkedSlots.size()));
+
+        YAxis yAxis = barChart.getAxisLeft();
+        // Set maximum for Oy = 50
+        yAxis.setAxisMaximum(50);
+        // Set minimum for Oy = 0
+        yAxis.setAxisMinimum(0f);
+        // Set the width for Oy
+        yAxis.setAxisLineWidth(1f);
+        // Set Oy color
+        yAxis.setAxisLineColor(Color.BLACK);
+        yAxis.setLabelCount(10);
+
+        BarDataSet bardataSet = new BarDataSet(entries, "Parking slots statistic");
+        bardataSet.setColors(ColorTemplate.MATERIAL_COLORS, 255);
+        bardataSet.setValueTextColor(Color.BLACK);
+
+        BarData barData = new BarData(bardataSet);
+
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(type));
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setGranularity(1f);
+        barChart.getXAxis().setGranularityEnabled(true);
+        barChart.setFitBars(true);
+        barChart.getDescription().setEnabled(false);
+        barChart.setData(barData);
         return rootView;
     }
 }

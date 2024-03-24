@@ -37,6 +37,7 @@ public class ParkingspaceDao {
         mp.put("D8", 20);
         Random random = new Random();
         String[] vehicleTypes = {"Car", "Motorcycle", "Bike"};
+//        String[] availability = {"available", "reserved", "parked"};
         long row = 0;
         for(String c : mp.keySet()) {
             int num = mp.get(c);
@@ -51,11 +52,45 @@ public class ParkingspaceDao {
         }
         return row;
     }
+    // Get all parking spaces
+    public List<ParkingSpace> getAllSlots() {
+        List<ParkingSpace> allSlots = new ArrayList<>();
 
-    // Get parking spaces
-    public List<ParkingSpace> getAvailableSpaces() {
-        List<ParkingSpace> parkingSpaces = new ArrayList<>();
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                FeedEntry.PARKING_AREA + " DESC";
+        Cursor cursor = db.query(
+                FeedEntry.TABLE_PARKING,   // The table to query
+                null,             // The array of columns to return (pass null to get all)
+                null,              // The columns for the WHERE clause
+                null,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                sortOrder               // The sort order
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String parkingArea = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AREA));
+                    String availability = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_STATUS));
+                    String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_VEHICLETYPE));
+                    String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_SPOT));
+                    ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType, parkingSpot);
+                    // Add ParkingSpace object to the list
+                    allSlots.add(parkingSpace);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return allSlots;
+    }
 
+    // Get available parking spaces
+    public List<ParkingSpace> getAvailableSlots() {
+        List<ParkingSpace> availableSlots = new ArrayList<>();
         // Columns to query:
         String[] projection = {
                 FeedEntry.PARKING_AREA,
@@ -63,7 +98,6 @@ public class ParkingspaceDao {
                 FeedEntry.PARKING_SPOT,
                 FeedEntry.PARKING_VEHICLETYPE
         };
-
         // "= ?" -> query all available spaces (availability = 1)
         String selection = FeedEntry.PARKING_STATUS + " = ?";
         String[] selectionArgs = { "available" };
@@ -90,7 +124,7 @@ public class ParkingspaceDao {
                     String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_SPOT));
                     ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType, parkingSpot);
                     // Add ParkingSpace object to the list
-                    parkingSpaces.add(parkingSpace);
+                    availableSlots.add(parkingSpace);
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -98,6 +132,101 @@ public class ParkingspaceDao {
                 cursor.close();
             }
         }
-        return parkingSpaces;
+        return availableSlots;
     }
+
+    // Get reserved parking spaces
+    public List<ParkingSpace> getReservedSlots() {
+        List<ParkingSpace> reservedSlots = new ArrayList<>();
+        // Columns to query:
+        String[] projection = {
+                FeedEntry.PARKING_AREA,
+                FeedEntry.PARKING_STATUS,
+                FeedEntry.PARKING_SPOT,
+                FeedEntry.PARKING_VEHICLETYPE
+        };
+        // "= ?" -> query all available spaces (availability = 1)
+        String selection = FeedEntry.PARKING_STATUS + " = ?";
+        String[] selectionArgs = { "reserved" };
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                FeedEntry.PARKING_AREA + " DESC";
+
+        Cursor cursor = db.query(
+                FeedEntry.TABLE_PARKING,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                sortOrder               // The sort order
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String parkingArea = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AREA));
+                    String availability = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_STATUS));
+                    String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_VEHICLETYPE));
+                    String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_SPOT));
+                    ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType, parkingSpot);
+                    // Add ParkingSpace object to the list
+                    reservedSlots.add(parkingSpace);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return reservedSlots;
+    }
+
+    // Get parked spaces
+    public List<ParkingSpace> getParkedSlots() {
+        List<ParkingSpace> parkedSlots = new ArrayList<>();
+        // Columns to query:
+        String[] projection = {
+                FeedEntry.PARKING_AREA,
+                FeedEntry.PARKING_STATUS,
+                FeedEntry.PARKING_SPOT,
+                FeedEntry.PARKING_VEHICLETYPE
+        };
+        // "= ?" -> query all available spaces (availability = 1)
+        String selection = FeedEntry.PARKING_STATUS + " = ?";
+        String[] selectionArgs = { "parked" };
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                FeedEntry.PARKING_AREA + " DESC";
+
+        Cursor cursor = db.query(
+                FeedEntry.TABLE_PARKING,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                sortOrder               // The sort order
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String parkingArea = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AREA));
+                    String availability = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_STATUS));
+                    String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_VEHICLETYPE));
+                    String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_SPOT));
+                    ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType, parkingSpot);
+                    // Add ParkingSpace object to the list
+                    parkedSlots.add(parkingSpace);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return parkedSlots;
+    }
+
 }
