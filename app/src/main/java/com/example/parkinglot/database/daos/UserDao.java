@@ -12,6 +12,7 @@ import com.example.parkinglot.database.entities.User;
 
 public class UserDao {
     private SQLiteDatabase db;
+    // User table columns
     public static class FeedEntry implements BaseColumns {
         public static final String TABLE_USER = "user";
         public static final String USER_ID = "id";

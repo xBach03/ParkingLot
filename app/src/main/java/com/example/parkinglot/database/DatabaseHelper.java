@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return instance;
     }
     public static final String DatabaseName = "LotParker";
-    public static final int DatabaseVersion = 5;
+    public static final int DatabaseVersion = 8;
 
     // Create user table string
     public static final String createTableUser = "CREATE TABLE " + UserDao.FeedEntry.TABLE_USER + "( " +
@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String createTableParkingspace = "CREATE TABLE " + ParkingspaceDao.FeedEntry.TABLE_PARKING + "( " +
             ParkingspaceDao.FeedEntry.PARKING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ParkingspaceDao.FeedEntry.PARKING_AREA + " TEXT, " +
-            ParkingspaceDao.FeedEntry.PARKING_AVAILABILITY + " TEXT, " +
+            ParkingspaceDao.FeedEntry.PARKING_STATUS + " TEXT, " +
             ParkingspaceDao.FeedEntry.PARKING_VEHICLETYPE + " TEXT, " +
             ParkingspaceDao.FeedEntry.PARKING_VEHICLEID + " TEXT, " +
             ParkingspaceDao.FeedEntry.PARKING_SPOT + " TEXT, " +

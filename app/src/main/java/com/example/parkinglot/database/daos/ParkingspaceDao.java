@@ -15,10 +15,11 @@ import java.util.Random;
 
 public class ParkingspaceDao {
     private SQLiteDatabase db;
+    // Parking space table columns
     public static class FeedEntry implements BaseColumns {
         public static final String TABLE_PARKING = "parking";
         public static final String PARKING_ID = "id";
-        public static final String PARKING_AVAILABILITY = "availability";
+        public static final String PARKING_STATUS = "status";
         public static final String PARKING_AREA = "area";
         public static final String PARKING_VEHICLEID = "vehicleId";
         public static final String PARKING_VEHICLETYPE = "vehicleType";
@@ -42,7 +43,7 @@ public class ParkingspaceDao {
             for(int i = 0; i < num; i++) {
                 data.put(FeedEntry.PARKING_AREA, c);
                 data.put(FeedEntry.PARKING_VEHICLEID, "null");
-                data.put(FeedEntry.PARKING_AVAILABILITY, true);
+                data.put(FeedEntry.PARKING_STATUS, "available");
                 data.put(FeedEntry.PARKING_SPOT, i + 100);
                 data.put(FeedEntry.PARKING_VEHICLETYPE, vehicleTypes[random.nextInt(vehicleTypes.length)]);
                 row = db.insert(FeedEntry.TABLE_PARKING, null, data);
@@ -58,14 +59,14 @@ public class ParkingspaceDao {
         // Columns to query:
         String[] projection = {
                 FeedEntry.PARKING_AREA,
-                FeedEntry.PARKING_AVAILABILITY,
+                FeedEntry.PARKING_STATUS,
                 FeedEntry.PARKING_SPOT,
                 FeedEntry.PARKING_VEHICLETYPE
         };
 
         // "= ?" -> query all available spaces (availability = 1)
-        String selection = FeedEntry.PARKING_AVAILABILITY + " = ?";
-        String[] selectionArgs = { "1" };
+        String selection = FeedEntry.PARKING_STATUS + " = ?";
+        String[] selectionArgs = { "available" };
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder =
@@ -84,7 +85,7 @@ public class ParkingspaceDao {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     String parkingArea = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AREA));
-                    boolean availability = cursor.getInt(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_AVAILABILITY)) == 1;
+                    String availability = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_STATUS));
                     String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_VEHICLETYPE));
                     String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.PARKING_SPOT));
                     ParkingSpace parkingSpace = new ParkingSpace(availability, parkingArea, vehicleType, parkingSpot);

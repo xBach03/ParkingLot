@@ -3,22 +3,22 @@ package com.example.parkinglot.database.entities;
 public class ParkingSpace {
     // Primary key
     private int ParkingId;
-    private boolean Availability;
+    private String Status;
     private String VehicleType;
     private String ParkingSpot;
     private String Area;
     // Foreign key -> Vehicle
     private int VehicleId;
 
-    public ParkingSpace(boolean availability, String area, int vehicleId, String vehicleType) {
-        Availability = availability;
+    public ParkingSpace(String status, String area, int vehicleId, String vehicleType) {
+        Status = status;
         Area = area;
         VehicleId = vehicleId;
         VehicleType = vehicleType;
     }
 
-    public ParkingSpace(boolean availability, String area, String vehicleType, String parkingSpot) {
-        Availability = availability;
+    public ParkingSpace(String status, String area, String vehicleType, String parkingSpot) {
+        Status = status;
         Area = area;
         VehicleType = vehicleType;
         ParkingSpot = parkingSpot;
@@ -40,8 +40,8 @@ public class ParkingSpace {
         ParkingId = parkingId;
     }
 
-    public void setAvailability(boolean availability) {
-        Availability = availability;
+    public void setStatus(String status) {
+        Status = status;
     }
 
     public void setArea(String area) {
@@ -52,8 +52,8 @@ public class ParkingSpace {
         VehicleId = vehicleId;
     }
 
-    public boolean isAvailability() {
-        return Availability;
+    public String isAvailable() {
+        return Status;
     }
 
     public String getArea() {

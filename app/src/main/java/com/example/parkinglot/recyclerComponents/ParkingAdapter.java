@@ -1,17 +1,24 @@
 package com.example.parkinglot.recyclerComponents;
 
+
+
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkinglot.R;
+import com.example.parkinglot.ReservationFragment;
 import com.example.parkinglot.database.entities.ParkingSpace;
 
 import java.util.List;
@@ -19,15 +26,27 @@ import java.util.List;
 public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingHolder> {
 
     private List<ParkingSpace> parkingspaces;
-    public static class ParkingHolder extends RecyclerView.ViewHolder {
+    private int selectedPos = -1;
+
+    public class ParkingHolder extends RecyclerView.ViewHolder {
         private ImageView ImageView;
         private TextView Information;
-
         public ParkingHolder(@NonNull View itemView) {
             super(itemView);
             ImageView = itemView.findViewById(R.id.recyclerVector);
             Information = itemView.findViewById(R.id.recyclerText);
+            Information.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if(pos == RecyclerView.NO_POSITION) return;
+                    notifyItemChanged(selectedPos);
+                    selectedPos = getAdapterPosition();
+                    notifyItemChanged(selectedPos);
+                }
+            });
         }
+
         public android.widget.ImageView getImageView() {
             return ImageView;
         }
@@ -62,7 +81,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
         String area = parkingspaces.get(position).getArea();
         String spot = parkingspaces.get(position).getParkingSpot();
         String displayer = "Area: " + area + " - Spot: " + spot;
-        holder.getInformation().setText(displayer);
+        holder.getInformation().setText(" " + displayer);
         Drawable drawable;
         switch (type) {
             case "Car":
@@ -80,6 +99,11 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
         }
         if(drawable != null) {
             holder.getImageView().setImageDrawable(drawable);
+        }
+        if(selectedPos == position) {
+            holder.itemView.setBackgroundColor(holder.Information.getContext().getColor(R.color.selectedPos));
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
