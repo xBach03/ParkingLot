@@ -1,12 +1,21 @@
 package com.example.parkinglot;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.parkinglot.database.DatabaseHelper;
+import com.example.parkinglot.database.daos.ParkingspaceDao;
+import com.example.parkinglot.recyclerComponents.ParkingAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +32,8 @@ public class ReservationFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
 
     public ReservationFragment() {
         // Required empty public constructor
@@ -53,12 +64,22 @@ public class ReservationFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reservation, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_reservation, container, false);
+        // Find the TextView within the inflated layout
+        RecyclerView recyclerView = rootView.findViewById(R.id.parkingRecycler);
+        dbHelper = new DatabaseHelper(requireContext());
+        db = dbHelper.getWritableDatabase();
+        ParkingspaceDao parkDao = new ParkingspaceDao(db);
+        ParkingAdapter parkingAdapter = new ParkingAdapter(parkDao.getAvailableSlots());
+        recyclerView.setAdapter(parkingAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        recyclerView.setLayoutManager(layoutManager);
+        return rootView;
     }
 }
