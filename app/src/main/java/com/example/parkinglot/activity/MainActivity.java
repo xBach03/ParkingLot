@@ -1,12 +1,9 @@
-package com.example.parkinglot;
+package com.example.parkinglot.activity;
 
 import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -17,6 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.parkinglot.fragment.ManagerFragment;
+import com.example.parkinglot.fragment.PaymentFragment;
+import com.example.parkinglot.R;
+import com.example.parkinglot.fragment.ReservationFragment;
+import com.example.parkinglot.fragment.StatisticsFragment;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

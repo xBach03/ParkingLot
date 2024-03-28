@@ -11,6 +11,13 @@ public class Reservation {
     // Foreign key -> Parkingspace
     private int ParkingId;
 
+    public Reservation(int reservationId, LocalDateTime time, int userId, int parkingId) {
+        ReservationId = reservationId;
+        this.time = time;
+        UserId = userId;
+        ParkingId = parkingId;
+    }
+
     public Reservation(LocalDateTime time, int userId, int parkingId) {
         this.time = time;
         UserId = userId;

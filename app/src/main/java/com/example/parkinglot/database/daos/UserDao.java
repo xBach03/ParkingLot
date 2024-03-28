@@ -1,19 +1,16 @@
 package com.example.parkinglot.database.daos;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.entities.User;
 
 public class UserDao {
     private SQLiteDatabase db;
     // User table columns
-    public static class FeedEntry implements BaseColumns {
+    public static class UserEntry implements BaseColumns {
         public static final String TABLE_USER = "user";
         public static final String USER_ID = "id";
         public static final String USER_USERNAME = "username";
@@ -27,15 +24,15 @@ public class UserDao {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
-                FeedEntry.USER_USERNAME,
+                UserEntry.USER_USERNAME,
         };
 
         // Filter results WHERE "title" = 'My Title'
-        String selection = FeedEntry.USER_USERNAME + " = ?";
+        String selection = UserEntry.USER_USERNAME + " = ?";
         String[] selectionArgs = { user.getUserName() };
 
         Cursor cursor = db.query(
-                FeedEntry.TABLE_USER,   // The table to query
+                UserEntry.TABLE_USER,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
@@ -60,17 +57,17 @@ public class UserDao {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
-                FeedEntry.USER_USERNAME,
-                FeedEntry.USER_PASSWORD
+                UserEntry.USER_USERNAME,
+                UserEntry.USER_PASSWORD
         };
 
         // Filter results WHERE "title" = 'My Title'
-        String selection = FeedEntry.USER_USERNAME + " = ? AND " + FeedEntry.USER_PASSWORD + " = ?" ;
+        String selection = UserEntry.USER_USERNAME + " = ? AND " + UserEntry.USER_PASSWORD + " = ?" ;
         String[] selectionArgs = { user.getUserName(), user.getPassword() };
 
 
         Cursor cursor = db.query(
-                FeedEntry.TABLE_USER,   // The table to query
+                UserEntry.TABLE_USER,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause

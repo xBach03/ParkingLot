@@ -1,20 +1,16 @@
-package com.example.parkinglot;
+package com.example.parkinglot.fragment;
 
-import android.annotation.SuppressLint;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.ParkingspaceDao;
 import com.example.parkinglot.database.entities.ParkingSpace;
@@ -106,7 +102,7 @@ public class StatisticsFragment extends Fragment {
         List<ParkingSpace> availableSlots = parkingDao.getAvailableSlots();
         List<ParkingSpace> reservedSlots = parkingDao.getReservedSlots();
         List<ParkingSpace> parkedSlots = parkingDao.getParkedSlots();
-        List<String> type = Arrays.asList("Parked", "Available", "Reserved");
+        List<String> type = Arrays.asList("Available", "Reserved", "Parked");
 
         // Configure entries for chart
         ArrayList<BarEntry> entries = new ArrayList<>();

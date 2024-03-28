@@ -1,9 +1,8 @@
-package com.example.parkinglot;
+package com.example.parkinglot.fragment;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,10 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.ParkingspaceDao;
+import com.example.parkinglot.database.daos.ReservationDao;
+import com.example.parkinglot.database.entities.AuthenticationManager;
+import com.example.parkinglot.database.entities.User;
 import com.example.parkinglot.recyclerComponents.ParkingAdapter;
 
 /**
@@ -34,6 +38,8 @@ public class ReservationFragment extends Fragment {
     private String mParam2;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
+    Button Reserver;
+    AuthenticationManager userManager;
 
     public ReservationFragment() {
         // Required empty public constructor
@@ -73,13 +79,33 @@ public class ReservationFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_reservation, container, false);
         // Find the TextView within the inflated layout
         RecyclerView recyclerView = rootView.findViewById(R.id.parkingRecycler);
+
         dbHelper = new DatabaseHelper(requireContext());
         db = dbHelper.getWritableDatabase();
+
         ParkingspaceDao parkDao = new ParkingspaceDao(db);
         ParkingAdapter parkingAdapter = new ParkingAdapter(parkDao.getAvailableSlots());
         recyclerView.setAdapter(parkingAdapter);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        // Set linear layout for items in recycler view
         recyclerView.setLayoutManager(layoutManager);
+
+
+        Reserver = rootView.findViewById(R.id.btnReserver);
+        Reserver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userManager = AuthenticationManager.getInstance(requireContext());
+                User current = userManager.getCurrentUser();
+                int posId = parkingAdapter.getSelectedPosId();
+//                Toast.makeText(requireContext(), "id: " + pos, Toast.LENGTH_SHORT).show();
+                boolean reserveParking = parkDao.reserveSlot(posId);
+                ReservationDao reserver = new ReservationDao(db);
+                boolean reservation = reserver.reserve(posId, current);
+                Toast.makeText(requireContext(), "ParkingSpace table: " + reserveParking + " Reservation table: " + reservation, Toast.LENGTH_SHORT).show();
+            }
+        });
         return rootView;
     }
 }

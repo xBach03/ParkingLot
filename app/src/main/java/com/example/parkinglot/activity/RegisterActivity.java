@@ -1,4 +1,4 @@
-package com.example.parkinglot;
+package com.example.parkinglot.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,12 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.UserDao;
 import com.example.parkinglot.database.entities.User;

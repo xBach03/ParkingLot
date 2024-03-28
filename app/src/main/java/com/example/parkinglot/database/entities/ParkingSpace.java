@@ -10,11 +10,13 @@ public class ParkingSpace {
     // Foreign key -> Vehicle
     private int VehicleId;
 
-    public ParkingSpace(String status, String area, int vehicleId, String vehicleType) {
+    public ParkingSpace(int parkingId, String status, String vehicleType, String parkingSpot, String area, int vehicleId) {
+        ParkingId = parkingId;
         Status = status;
+        VehicleType = vehicleType;
+        ParkingSpot = parkingSpot;
         Area = area;
         VehicleId = vehicleId;
-        VehicleType = vehicleType;
     }
 
     public ParkingSpace(String status, String area, String vehicleType, String parkingSpot) {

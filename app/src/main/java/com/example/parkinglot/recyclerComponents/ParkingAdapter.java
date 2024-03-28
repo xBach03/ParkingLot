@@ -2,7 +2,6 @@ package com.example.parkinglot.recyclerComponents;
 
 
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -10,15 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkinglot.R;
-import com.example.parkinglot.ReservationFragment;
 import com.example.parkinglot.database.entities.ParkingSpace;
 
 import java.util.List;
@@ -106,7 +102,9 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
-
+    public int getSelectedPosId() {
+        return parkingspaces.get(selectedPos).getParkingId();
+    }
     @Override
     public int getItemCount() {
         return parkingspaces.size();
