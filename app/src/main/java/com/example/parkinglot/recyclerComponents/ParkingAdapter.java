@@ -15,13 +15,13 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkinglot.R;
-import com.example.parkinglot.database.entities.ParkingSpace;
+import com.example.parkinglot.database.entities.ParkingSlot;
 
 import java.util.List;
 
 public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingHolder> {
 
-    private List<ParkingSpace> parkingspaces;
+    private List<ParkingSlot> parkingspaces;
     private int selectedPos = -1;
 
     public class ParkingHolder extends RecyclerView.ViewHolder {
@@ -59,7 +59,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             Information = information;
         }
     }
-    public ParkingAdapter(List<ParkingSpace> listSpaces) {
+    public ParkingAdapter(List<ParkingSlot> listSpaces) {
         parkingspaces = listSpaces;
     }
     // Create new views (invoked by the layout manager)
@@ -67,7 +67,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
     @Override
     public ParkingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.parking_recycler_item, parent, false);
         return new ParkingHolder(view);
     }
     // Replace the contents of a view (invoked by the layout manager)
@@ -108,5 +108,8 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
     @Override
     public int getItemCount() {
         return parkingspaces.size();
+    }
+    public void updateDataSet(List<ParkingSlot> newParkingspaces) {
+        parkingspaces = newParkingspaces;
     }
 }

@@ -4,9 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
-import android.widget.Toast;
 
-import com.example.parkinglot.database.entities.ParkingSpace;
+import com.example.parkinglot.database.entities.ParkingSlot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ParkingspaceDao {
+public class ParkingSlotDao {
     private SQLiteDatabase db;
     // Parking space table columns
     public static class ParkingEntry implements BaseColumns {
@@ -27,7 +26,7 @@ public class ParkingspaceDao {
         public static final String PARKING_SPOT = "parkingSpot";
 
     }
-    public ParkingspaceDao(SQLiteDatabase db) {
+    public ParkingSlotDao(SQLiteDatabase db) {
         this.db = db;
     }
     public long insertParkingspace() {
@@ -54,8 +53,8 @@ public class ParkingspaceDao {
         return row;
     }
     // Get all parking spaces
-    public List<ParkingSpace> getAllSlots() {
-        List<ParkingSpace> allSlots = new ArrayList<>();
+    public List<ParkingSlot> getAllSlots() {
+        List<ParkingSlot> allSlots = new ArrayList<>();
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder =
@@ -78,9 +77,9 @@ public class ParkingspaceDao {
                     String availability = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_STATUS));
                     String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_VEHICLETYPE));
                     String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_SPOT));
-                    ParkingSpace parkingSpace = new ParkingSpace(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
+                    ParkingSlot parkingSlot = new ParkingSlot(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
                     // Add ParkingSpace object to the list
-                    allSlots.add(parkingSpace);
+                    allSlots.add(parkingSlot);
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -92,8 +91,8 @@ public class ParkingspaceDao {
     }
 
     // Get available parking spaces
-    public List<ParkingSpace> getAvailableSlots() {
-        List<ParkingSpace> availableSlots = new ArrayList<>();
+    public List<ParkingSlot> getAvailableSlots() {
+        List<ParkingSlot> availableSlots = new ArrayList<>();
         // "= ?" -> query all available spaces (status = available)
         String selection = ParkingEntry.PARKING_STATUS + " = ?";
         String[] selectionArgs = { "available" };
@@ -120,9 +119,9 @@ public class ParkingspaceDao {
                     String availability = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_STATUS));
                     String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_VEHICLETYPE));
                     String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_SPOT));
-                    ParkingSpace parkingSpace = new ParkingSpace(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
+                    ParkingSlot parkingSlot = new ParkingSlot(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
                     // Add ParkingSpace object to the list
-                    availableSlots.add(parkingSpace);
+                    availableSlots.add(parkingSlot);
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -134,8 +133,8 @@ public class ParkingspaceDao {
     }
 
     // Get reserved parking spaces
-    public List<ParkingSpace> getReservedSlots() {
-        List<ParkingSpace> reservedSlots = new ArrayList<>();
+    public List<ParkingSlot> getReservedSlots() {
+        List<ParkingSlot> reservedSlots = new ArrayList<>();
         // "= ?" -> query all available spaces (status = reserved)
         String selection = ParkingEntry.PARKING_STATUS + " = ?";
         String[] selectionArgs = { "reserved" };
@@ -162,9 +161,9 @@ public class ParkingspaceDao {
                     String availability = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_STATUS));
                     String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_VEHICLETYPE));
                     String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_SPOT));
-                    ParkingSpace parkingSpace = new ParkingSpace(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
+                    ParkingSlot parkingSlot = new ParkingSlot(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
                     // Add ParkingSpace object to the list
-                    reservedSlots.add(parkingSpace);
+                    reservedSlots.add(parkingSlot);
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -176,8 +175,8 @@ public class ParkingspaceDao {
     }
 
     // Get parked spaces
-    public List<ParkingSpace> getParkedSlots() {
-        List<ParkingSpace> parkedSlots = new ArrayList<>();
+    public List<ParkingSlot> getParkedSlots() {
+        List<ParkingSlot> parkedSlots = new ArrayList<>();
         // "= ?" -> query all available spaces (status = parked)
         String selection = ParkingEntry.PARKING_STATUS + " = ?";
         String[] selectionArgs = { "parked" };
@@ -204,9 +203,9 @@ public class ParkingspaceDao {
                     String availability = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_STATUS));
                     String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_VEHICLETYPE));
                     String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_SPOT));
-                    ParkingSpace parkingSpace = new ParkingSpace(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
+                    ParkingSlot parkingSlot = new ParkingSlot(parkingId, availability, vehicleType, parkingSpot, parkingArea, vehicleId);
                     // Add ParkingSpace object to the list
-                    parkedSlots.add(parkingSpace);
+                    parkedSlots.add(parkingSlot);
                 } while (cursor.moveToNext());
             }
         } finally {

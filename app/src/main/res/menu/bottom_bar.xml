@@ -20,6 +20,6 @@
         />
     <item android:id="@+id/payment"
         android:title="Payment"
-        android:icon="@drawable/creditcard"
+        android:icon="@drawable/debitcard"
         />
 </menu>

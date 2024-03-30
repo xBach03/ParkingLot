@@ -3,14 +3,212 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.PaymentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Payment Fragment"
-        android:layout_gravity="center"
-        />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/paymentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Debit card"
+            android:textColor="#96E9C6"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/balanceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your balance"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/paymentTitle" />
+
+        <TextView
+            android:id="@+id/balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5000$"
+            android:textSize="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/balanceTitle" />
+
+        <View
+            android:id="@+id/debitBg"
+            android:layout_width="350dp"
+            android:layout_height="210dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/debit_card_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/balance" />
+
+        <TextView
+            android:id="@+id/debitTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="170dp"
+            android:text="Lot Parker Debit"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="@id/debitBg"
+            app:layout_constraintStart_toStartOf="@id/debitBg"
+            app:layout_constraintTop_toTopOf="@+id/debitBg" />
+
+        <ImageView
+            android:id="@+id/chip"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="80dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/chip"
+            app:layout_constraintEnd_toEndOf="@+id/debitTitle"
+            app:layout_constraintStart_toStartOf="@id/debitTitle"
+            app:layout_constraintTop_toBottomOf="@id/debitTitle" />
+
+        <TextView
+            android:id="@+id/debitId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="0000   1234   5678   9999"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            app:layout_constraintEnd_toEndOf="@id/debitBg"
+            app:layout_constraintStart_toStartOf="@id/debitBg"
+            app:layout_constraintTop_toBottomOf="@id/chip"
+
+            />
+
+        <TextView
+            android:id="@+id/valid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
+            android:text="VALID"
+            android:textColor="@color/white"
+            android:textSize="7dp"
+            app:layout_constraintEnd_toEndOf="@id/debitId"
+            app:layout_constraintStart_toStartOf="@id/debitId"
+            app:layout_constraintTop_toBottomOf="@id/debitId" />
+
+        <TextView
+            android:id="@+id/thru"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
+            android:text="THRU."
+            android:textColor="@color/white"
+            android:textSize="7dp"
+            app:layout_constraintEnd_toEndOf="@id/debitId"
+            app:layout_constraintStart_toStartOf="@id/debitId"
+            app:layout_constraintTop_toBottomOf="@id/valid" />
+
+        <TextView
+            android:id="@+id/validDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="55dp"
+            android:text="12/24"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/debitId"
+            app:layout_constraintStart_toEndOf="@id/valid"
+            app:layout_constraintTop_toBottomOf="@id/debitId" />
+
+        <TextView
+            android:id="@+id/debitOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="163dp"
+            android:layout_marginEnd="150dp"
+            android:layout_marginBottom="20dp"
+            android:text="DANGXUANBACH"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/debitBg"
+            app:layout_constraintEnd_toEndOf="@id/debitBg"
+            app:layout_constraintStart_toStartOf="@id/debitTitle"
+            app:layout_constraintTop_toTopOf="@+id/debitBg" />
+
+        <ImageView
+            android:id="@+id/mastercard"
+            android:layout_width="70dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="240dp"
+            android:layout_marginBottom="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/mastercard"
+            app:layout_constraintBottom_toBottomOf="@id/debitBg"
+            app:layout_constraintEnd_toEndOf="@id/debitBg"
+            app:layout_constraintStart_toStartOf="@id/debitBg" />
+
+        <TextView
+            android:id="@+id/action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="250dp"
+            android:text="Actions"
+            android:textSize="17dp"
+            app:layout_constraintEnd_toEndOf="@id/debitBg"
+            app:layout_constraintStart_toStartOf="@id/debitBg"
+            app:layout_constraintTop_toBottomOf="@id/debitBg" />
+
+        <ImageButton
+            android:id="@+id/transaction"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/payment_option_bg"
+            android:scaleType="fitXY"
+            android:src="@drawable/transaction"
+            app:layout_constraintEnd_toStartOf="@id/topUp"
+            app:layout_constraintStart_toStartOf="@id/debitBg"
+            app:layout_constraintTop_toBottomOf="@id/action"
+            />
+
+        <ImageButton
+            android:id="@+id/topUp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/payment_option_bg"
+            android:scaleType="fitXY"
+            android:src="@drawable/top_up"
+            app:layout_constraintEnd_toStartOf="@id/transHistory"
+            app:layout_constraintStart_toEndOf="@id/transaction"
+            app:layout_constraintTop_toBottomOf="@id/action" />
+
+        <ImageButton
+            android:id="@+id/transHistory"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/payment_option_bg"
+            android:scaleType="fitXY"
+            android:src="@drawable/transaction_history"
+            app:layout_constraintEnd_toEndOf="@id/debitBg"
+            app:layout_constraintStart_toEndOf="@id/topUp"
+            app:layout_constraintTop_toBottomOf="@id/action" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="400dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

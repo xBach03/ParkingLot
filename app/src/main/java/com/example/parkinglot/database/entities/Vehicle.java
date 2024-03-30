@@ -2,7 +2,6 @@ package com.example.parkinglot.database.entities;
 
 public class Vehicle {
     // Primary key
-    private Vehicle Id;
     private String LicensePlate;
     private String Type;
     private String Color;
@@ -16,9 +15,6 @@ public class Vehicle {
         UserId = userId;
     }
 
-    public Vehicle getId() {
-        return Id;
-    }
 
     public String getLicensePlate() {
         return LicensePlate;
@@ -36,9 +32,6 @@ public class Vehicle {
         return UserId;
     }
 
-    public void setId(Vehicle id) {
-        Id = id;
-    }
 
     public void setLicensePlate(String licensePlate) {
         LicensePlate = licensePlate;

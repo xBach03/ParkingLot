@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView Navigator;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
+    private Toolbar topBar;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +35,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dbHelper = DatabaseHelper.getInstance(this);
         db = dbHelper.getWritableDatabase();
+        topBar = findViewById(R.id.mainToolbar);
+        setSupportActionBar(topBar);
+        topBar.setTitle("Statistic");
         LoadFragment(new StatisticsFragment());
         Navigator = findViewById(R.id.btmNavigation);
         Navigator.setOnItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if(id == R.id.historyManager) {
+                topBar.setTitle("Manager");
                 LoadFragment(new ManagerFragment());
             } else if(id == R.id.reservation) {
+                topBar.setTitle("Reservation");
                 LoadFragment(new ReservationFragment());
             } else if(id == R.id.payment) {
+                topBar.setTitle("Payment");
                 LoadFragment(new PaymentFragment());
             } else if(id == R.id.camera) {
                 try {
@@ -51,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 LoadFragment(new StatisticsFragment());
+                topBar.setTitle("Statistic");
             }
             return true;
         });

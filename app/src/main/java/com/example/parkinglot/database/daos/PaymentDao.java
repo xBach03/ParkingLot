@@ -7,8 +7,8 @@ public class PaymentDao {
     public static class PaymentEntry implements BaseColumns {
         public static final String TABLE_PAYMENT = "payment";
         public static final String PAYMENT_ID = "id";
-        public static final String PAYMENT_AMOUNT = "amount";
-        public static final String PAYMENT_TIME = "time";
-        public static final String PAYMENT_VEHICLEID = "vehicleId";
+        public static final String PAYMENT_BALANCE = "balance";
+        public static final String PAYMENT_VALIDATIONDATE = "validationDate";
+        public static final String PAYMENT_USERID = "userId";
     }
 }

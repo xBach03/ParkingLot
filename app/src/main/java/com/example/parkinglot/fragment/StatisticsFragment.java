@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 
 import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
-import com.example.parkinglot.database.daos.ParkingspaceDao;
-import com.example.parkinglot.database.entities.ParkingSpace;
+import com.example.parkinglot.database.daos.ParkingSlotDao;
+import com.example.parkinglot.database.entities.ParkingSlot;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -94,14 +94,14 @@ public class StatisticsFragment extends Fragment {
         BarChart barChart = rootView.findViewById(R.id.barChart);
         barChart.getAxisRight().setDrawLabels(false);
 
-        dbHelper = new DatabaseHelper(requireContext());
+        dbHelper = DatabaseHelper.getInstance(requireContext());
         db = dbHelper.getWritableDatabase();
-        ParkingspaceDao parkingDao = new ParkingspaceDao(db);
+        ParkingSlotDao parkingDao = new ParkingSlotDao(db);
 
         // Query for all type of slots
-        List<ParkingSpace> availableSlots = parkingDao.getAvailableSlots();
-        List<ParkingSpace> reservedSlots = parkingDao.getReservedSlots();
-        List<ParkingSpace> parkedSlots = parkingDao.getParkedSlots();
+        List<ParkingSlot> availableSlots = parkingDao.getAvailableSlots();
+        List<ParkingSlot> reservedSlots = parkingDao.getReservedSlots();
+        List<ParkingSlot> parkedSlots = parkingDao.getParkedSlots();
         List<String> type = Arrays.asList("Available", "Reserved", "Parked");
 
         // Configure entries for chart

@@ -5,21 +5,23 @@ import java.time.LocalDateTime;
 public class Reservation {
     // Primary key
     private int ReservationId;
-    private LocalDateTime time;
+    private LocalDateTime reservedTime;
+    private LocalDateTime startTime;
     // Foreign key -> User
     private int UserId;
     // Foreign key -> Parkingspace
     private int ParkingId;
 
-    public Reservation(int reservationId, LocalDateTime time, int userId, int parkingId) {
+    public Reservation(int reservationId, LocalDateTime reservedTime, LocalDateTime startTime, int userId, int parkingId) {
         ReservationId = reservationId;
-        this.time = time;
+        this.reservedTime = reservedTime;
+        this.startTime = startTime;
         UserId = userId;
         ParkingId = parkingId;
     }
 
     public Reservation(LocalDateTime time, int userId, int parkingId) {
-        this.time = time;
+        this.reservedTime = time;
         UserId = userId;
         ParkingId = parkingId;
     }
@@ -28,8 +30,8 @@ public class Reservation {
         return ReservationId;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getReservedTime() {
+        return reservedTime;
     }
 
     public int getUserId() {
@@ -45,8 +47,8 @@ public class Reservation {
         ReservationId = reservationId;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setReservedTime(LocalDateTime reservedTime) {
+        this.reservedTime = reservedTime;
     }
 
     public void setUserId(int userId) {

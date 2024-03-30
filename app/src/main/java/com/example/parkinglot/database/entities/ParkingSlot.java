@@ -1,6 +1,6 @@
 package com.example.parkinglot.database.entities;
 
-public class ParkingSpace {
+public class ParkingSlot {
     // Primary key
     private int ParkingId;
     private String Status;
@@ -10,7 +10,7 @@ public class ParkingSpace {
     // Foreign key -> Vehicle
     private int VehicleId;
 
-    public ParkingSpace(int parkingId, String status, String vehicleType, String parkingSpot, String area, int vehicleId) {
+    public ParkingSlot(int parkingId, String status, String vehicleType, String parkingSpot, String area, int vehicleId) {
         ParkingId = parkingId;
         Status = status;
         VehicleType = vehicleType;
@@ -19,7 +19,7 @@ public class ParkingSpace {
         VehicleId = vehicleId;
     }
 
-    public ParkingSpace(String status, String area, String vehicleType, String parkingSpot) {
+    public ParkingSlot(String status, String area, String vehicleType, String parkingSpot) {
         Status = status;
         Area = area;
         VehicleType = vehicleType;
