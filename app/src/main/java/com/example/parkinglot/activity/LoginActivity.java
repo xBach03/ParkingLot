@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Check for account information in database
                 boolean loginCheck = userDao.userLoginCheck(User);
                 if(loginCheck) {
-                    Toast.makeText(LoginActivity.this, "You have logged in as " + user, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "You have logged in as " + userManager.getCurrentUser().getUserName(), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent();
                     i.setClass(LoginActivity.this, MainActivity.class);
                     startActivity(i);

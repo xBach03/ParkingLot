@@ -8,13 +8,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <TextView
             android:id="@+id/reservator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reserve a parking space now"
-            android:textColor="#6C22A6"
+            android:textColor="@color/primaryPurple"
             android:textStyle="bold"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,7 +28,7 @@
             app:layout_constraintBottom_toTopOf="@id/parkingRecycler"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="#6962AD"/>
+            android:background="@color/primaryPurple"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/parkingRecycler"
@@ -46,7 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/btnReserver"
-            android:background="#6962AD"/>
+            android:background="@color/primaryPurple"/>
         <Button
             android:id="@+id/btnReserver"
             android:layout_width="wrap_content"

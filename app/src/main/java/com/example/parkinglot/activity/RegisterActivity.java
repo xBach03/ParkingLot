@@ -13,7 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
+import com.example.parkinglot.database.daos.PaymentDao;
 import com.example.parkinglot.database.daos.UserDao;
+import com.example.parkinglot.database.entities.AuthenticationManager;
+import com.example.parkinglot.database.entities.Payment;
 import com.example.parkinglot.database.entities.User;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -43,13 +46,17 @@ public class RegisterActivity extends AppCompatActivity {
                 EditText UserReg = findViewById(R.id.userNameReg);
                 EditText PasswordReg = findViewById(R.id.passwordReg);
                 EditText CfPasswordReg = findViewById(R.id.cfPasswordReg);
-                UserDao userDao = new UserDao(db);
                 String username = UserReg.getText().toString();
                 String password = PasswordReg.getText().toString();
                 String confirmpassword = CfPasswordReg.getText().toString();
                 // Check if username already exists
+                UserDao userDao = new UserDao(db);
                 boolean check = userDao.insertUser(new User(username, confirmpassword));
                 if(password.equals(confirmpassword) && check) {
+                    PaymentDao paymentDao = new PaymentDao(db);
+                    AuthenticationManager userManager = AuthenticationManager.getInstance(RegisterActivity.this);
+                    userManager.loginUser(username, password);
+                    paymentDao.generateOnCreate(userManager.getCurrentUser());
                     Toast.makeText(RegisterActivity.this, "You have registered as " + username, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent();
                     i.setClass(RegisterActivity.this, MainActivity.class);

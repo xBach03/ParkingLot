@@ -31,7 +31,7 @@ public class ReservationDao {
     public List<Reservation> getAllReservations() {
         List<Reservation> allReservations = new ArrayList<>();
 
-        // How you want the results sorted in the resulting Cursor
+        // Result sorted by reservation id descending
         String sortOrder =
                 ReservationEntry.RESERVATION_ID + " DESC";
         Cursor cursor = db.query(

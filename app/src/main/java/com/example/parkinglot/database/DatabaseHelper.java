@@ -25,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return instance;
     }
     public static final String DatabaseName = "LotParker";
-    public static final int DatabaseVersion = 15;
+    public static final int DatabaseVersion = 18;
 
     // Create user table string
     public static final String createTableUser = "CREATE TABLE " + UserDao.UserEntry.TABLE_USER + "( " +

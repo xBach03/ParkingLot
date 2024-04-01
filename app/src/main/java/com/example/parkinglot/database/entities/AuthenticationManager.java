@@ -28,15 +28,14 @@ public class AuthenticationManager {
 
     // Method to log in user
     public void loginUser(String username, String password) {
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
+        // Query all from user table
         String[] projection = {
                 UserDao.UserEntry.USER_ID,
                 UserDao.UserEntry.USER_USERNAME,
                 UserDao.UserEntry.USER_PASSWORD
         };
 
-        // Filter results WHERE "title" = 'My Title'
+        // Query to find current user
         String selection = UserDao.UserEntry.USER_USERNAME + " = ? AND " +UserDao.UserEntry.USER_PASSWORD + " = ?";
         String[] selectionArgs = { username, password };
 

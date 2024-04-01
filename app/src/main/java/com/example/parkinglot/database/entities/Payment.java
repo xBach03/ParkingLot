@@ -4,11 +4,21 @@ import java.time.LocalDateTime;
 
 public class Payment {
     // Primary key
-    private int Id;
+    private String Id;
     private Double Balance;
     private String ValidationDate;
     // Foreign key -> Vehicle
     private int UserId;
+
+    public Payment() {
+
+    }
+    public Payment(String id, Double balance, String validationDate, int userId) {
+        Id = id;
+        Balance = balance;
+        ValidationDate = validationDate;
+        UserId = userId;
+    }
 
     public Payment(Double balance, String validationDate, int userId) {
         Balance = balance;
@@ -16,7 +26,7 @@ public class Payment {
         UserId = userId;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
@@ -32,7 +42,7 @@ public class Payment {
         return UserId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 

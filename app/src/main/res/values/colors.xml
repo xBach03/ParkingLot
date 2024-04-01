@@ -3,4 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="selectedPos">#83C0C1</color>
+    <color name="primaryPurple">#6C22A6</color>
+    <color name="secondaryPurple">#6962AD</color>
+    <color name="thirdPurple">#83C0C1</color>
+    <color name="fourthPurple">#96E9C6</color>
+    <color name="navigationColor">#8E7AB5</color>
 </resources>

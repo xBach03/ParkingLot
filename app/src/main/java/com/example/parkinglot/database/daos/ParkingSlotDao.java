@@ -97,7 +97,7 @@ public class ParkingSlotDao {
         String selection = ParkingEntry.PARKING_STATUS + " = ?";
         String[] selectionArgs = { "available" };
 
-        // How you want the results sorted in the resulting Cursor
+        // Result sorted by parking area descending
         String sortOrder =
                 ParkingEntry.PARKING_AREA + " DESC";
 
@@ -139,7 +139,7 @@ public class ParkingSlotDao {
         String selection = ParkingEntry.PARKING_STATUS + " = ?";
         String[] selectionArgs = { "reserved" };
 
-        // How you want the results sorted in the resulting Cursor
+        // Result sorted by parking area descending
         String sortOrder =
                 ParkingEntry.PARKING_AREA + " DESC";
 
@@ -181,7 +181,7 @@ public class ParkingSlotDao {
         String selection = ParkingEntry.PARKING_STATUS + " = ?";
         String[] selectionArgs = { "parked" };
 
-        // How you want the results sorted in the resulting Cursor
+        // Result sorted by parking area descending
         String sortOrder =
                 ParkingEntry.PARKING_AREA + " DESC";
 

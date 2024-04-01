@@ -9,18 +9,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <TextView
             android:id="@+id/paymentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Debit card"
-            android:textColor="#96E9C6"
+            android:textColor="@color/fourthPurple"
             android:textSize="30dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <TextView
             android:id="@+id/balanceTitle"
@@ -172,19 +172,19 @@
             android:background="@drawable/payment_option_bg"
             android:scaleType="fitXY"
             android:src="@drawable/transaction"
-            app:layout_constraintEnd_toStartOf="@id/topUp"
+            app:layout_constraintEnd_toStartOf="@id/deposit"
             app:layout_constraintStart_toStartOf="@id/debitBg"
             app:layout_constraintTop_toBottomOf="@id/action"
             />
 
         <ImageButton
-            android:id="@+id/topUp"
+            android:id="@+id/deposit"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/payment_option_bg"
             android:scaleType="fitXY"
-            android:src="@drawable/top_up"
+            android:src="@drawable/deposit"
             app:layout_constraintEnd_toStartOf="@id/transHistory"
             app:layout_constraintStart_toEndOf="@id/transaction"
             app:layout_constraintTop_toBottomOf="@id/action" />
@@ -198,8 +198,35 @@
             android:scaleType="fitXY"
             android:src="@drawable/transaction_history"
             app:layout_constraintEnd_toEndOf="@id/debitBg"
-            app:layout_constraintStart_toEndOf="@id/topUp"
+            app:layout_constraintStart_toEndOf="@id/deposit"
             app:layout_constraintTop_toBottomOf="@id/action" />
+        <TextView
+            android:id="@+id/transactionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transaction"
+            app:layout_constraintStart_toStartOf="@+id/transaction"
+            app:layout_constraintEnd_toEndOf="@+id/transaction"
+            app:layout_constraintTop_toBottomOf="@+id/transaction"
+            />
+        <TextView
+            android:id="@+id/topUpText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deposit"
+            app:layout_constraintStart_toStartOf="@+id/deposit"
+            app:layout_constraintEnd_toEndOf="@+id/deposit"
+            app:layout_constraintTop_toBottomOf="@+id/deposit"
+            />
+        <TextView
+            android:id="@+id/historyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History"
+            app:layout_constraintStart_toStartOf="@+id/transHistory"
+            app:layout_constraintEnd_toEndOf="@+id/transHistory"
+            app:layout_constraintTop_toBottomOf="@+id/transHistory"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
