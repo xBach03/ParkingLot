@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="@id/recyclerBg"
         app:layout_constraintTop_toTopOf="@id/recyclerBg"
         app:layout_constraintBottom_toBottomOf="@id/recyclerBg"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="35dp"
         android:text="13.00$"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

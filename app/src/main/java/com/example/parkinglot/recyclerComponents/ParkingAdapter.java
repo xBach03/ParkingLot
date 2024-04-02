@@ -31,6 +31,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             super(itemView);
             ImageView = itemView.findViewById(R.id.recyclerVector);
             Information = itemView.findViewById(R.id.recyclerText);
+            // Set onclick for each row to be highlighted
             Information.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -43,7 +44,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             });
         }
 
-        public android.widget.ImageView getImageView() {
+        public ImageView getImageView() {
             return ImageView;
         }
 
@@ -73,10 +74,12 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(@NonNull ParkingHolder holder, int position) {
+        // Get data from dataset
         String type = parkingspaces.get(position).getVehicleType();
         String area = parkingspaces.get(position).getArea();
         String spot = parkingspaces.get(position).getParkingSpot();
         String displayer = "Area: " + area + " - Spot: " + spot;
+        // Set information for one row
         holder.getInformation().setText(" " + displayer);
         Drawable drawable;
         switch (type) {
@@ -93,6 +96,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
                 drawable = null;
                 break;
         }
+        // Set drawable for specific vehicle type
         if(drawable != null) {
             holder.getImageView().setImageDrawable(drawable);
         }

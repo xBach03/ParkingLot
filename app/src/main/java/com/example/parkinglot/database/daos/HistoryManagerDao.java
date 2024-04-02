@@ -2,6 +2,8 @@ package com.example.parkinglot.database.daos;
 
 import android.provider.BaseColumns;
 
+import com.example.parkinglot.database.entities.User;
+
 public class HistoryManagerDao {
     public static class HistoryEntry implements BaseColumns {
         public static final String TABLE_HISTORY = "history";
@@ -11,5 +13,8 @@ public class HistoryManagerDao {
         public static final String HISTORY_MONEYPAID = "moneyPaid";
         public static final String HISTORY_USERID = "userId";
         public static final String HISTORY_VEHICLEID = "vehicleId";
+    }
+    public void generateOnCreate(User user) {
+
     }
 }
