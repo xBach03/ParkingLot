@@ -1,17 +1,19 @@
-package com.example.parkinglot;
+package com.example.parkinglot.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.UserDao;
+import com.example.parkinglot.database.entities.AuthenticationManager;
 import com.example.parkinglot.database.entities.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -20,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private EditText userNameLogin, passwordLogin;
+    private AuthenticationManager userManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +38,14 @@ public class LoginActivity extends AppCompatActivity {
                 passwordLogin = findViewById(R.id.passwordLogin);
                 String user = userNameLogin.getText().toString();
                 String password = passwordLogin.getText().toString();
+                userManager = AuthenticationManager.getInstance(LoginActivity.this);
+                userManager.loginUser(user, password);
                 User User = new User(user, password);
                 UserDao userDao = new UserDao(db);
                 // Check for account information in database
                 boolean loginCheck = userDao.userLoginCheck(User);
                 if(loginCheck) {
-                    Toast.makeText(LoginActivity.this, "You have login as " + user, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "You have logged in as " + userManager.getCurrentUser().getUserName(), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent();
                     i.setClass(LoginActivity.this, MainActivity.class);
                     startActivity(i);

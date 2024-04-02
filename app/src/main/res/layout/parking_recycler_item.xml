@@ -31,6 +31,6 @@
         app:layout_constraintTop_toBottomOf="@+id/recyclerVector"
         app:layout_constraintStart_toStartOf="@+id/recyclerVector"
         app:layout_constraintEnd_toEndOf="@+id/recyclerText"
-        android:background="#6962AD"/>
+        android:background="@color/primaryPurple"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

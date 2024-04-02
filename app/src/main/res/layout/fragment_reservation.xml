@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReservationFragment">
+    tools:context=".fragment.ReservationFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <TextView
             android:id="@+id/reservator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reserve a parking space now"
-            android:textColor="#6C22A6"
+            android:textColor="@color/primaryPurple"
             android:textStyle="bold"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,14 +28,14 @@
             app:layout_constraintBottom_toTopOf="@id/parkingRecycler"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="#6962AD"/>
+            android:background="@color/primaryPurple"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/parkingRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@id/reservator"
-            app:layout_constraintBottom_toTopOf="@id/btnReservator"
+            app:layout_constraintBottom_toTopOf="@id/btnReserver"
             android:layout_marginTop="20dp"
             />
         <LinearLayout
@@ -45,10 +44,10 @@
             app:layout_constraintTop_toBottomOf="@id/parkingRecycler"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btnReservator"
-            android:background="#6962AD"/>
+            app:layout_constraintBottom_toTopOf="@id/btnReserver"
+            android:background="@color/primaryPurple"/>
         <Button
-            android:id="@+id/btnReservator"
+            android:id="@+id/btnReserver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"

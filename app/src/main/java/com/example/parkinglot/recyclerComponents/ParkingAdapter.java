@@ -2,7 +2,6 @@ package com.example.parkinglot.recyclerComponents;
 
 
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -10,22 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkinglot.R;
-import com.example.parkinglot.ReservationFragment;
-import com.example.parkinglot.database.entities.ParkingSpace;
+import com.example.parkinglot.database.entities.ParkingSlot;
 
 import java.util.List;
 
 public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingHolder> {
 
-    private List<ParkingSpace> parkingspaces;
+    private List<ParkingSlot> parkingspaces;
     private int selectedPos = -1;
 
     public class ParkingHolder extends RecyclerView.ViewHolder {
@@ -35,6 +31,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             super(itemView);
             ImageView = itemView.findViewById(R.id.recyclerVector);
             Information = itemView.findViewById(R.id.recyclerText);
+            // Set onclick for each row to be highlighted
             Information.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -47,7 +44,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             });
         }
 
-        public android.widget.ImageView getImageView() {
+        public ImageView getImageView() {
             return ImageView;
         }
 
@@ -63,7 +60,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             Information = information;
         }
     }
-    public ParkingAdapter(List<ParkingSpace> listSpaces) {
+    public ParkingAdapter(List<ParkingSlot> listSpaces) {
         parkingspaces = listSpaces;
     }
     // Create new views (invoked by the layout manager)
@@ -71,16 +68,18 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
     @Override
     public ParkingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.parking_recycler_item, parent, false);
         return new ParkingHolder(view);
     }
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(@NonNull ParkingHolder holder, int position) {
+        // Get data from dataset
         String type = parkingspaces.get(position).getVehicleType();
         String area = parkingspaces.get(position).getArea();
         String spot = parkingspaces.get(position).getParkingSpot();
         String displayer = "Area: " + area + " - Spot: " + spot;
+        // Set information for one row
         holder.getInformation().setText(" " + displayer);
         Drawable drawable;
         switch (type) {
@@ -97,6 +96,7 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
                 drawable = null;
                 break;
         }
+        // Set drawable for specific vehicle type
         if(drawable != null) {
             holder.getImageView().setImageDrawable(drawable);
         }
@@ -106,9 +106,14 @@ public class ParkingAdapter extends RecyclerView.Adapter<ParkingAdapter.ParkingH
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
-
+    public int getSelectedPosId() {
+        return parkingspaces.get(selectedPos).getParkingId();
+    }
     @Override
     public int getItemCount() {
         return parkingspaces.size();
+    }
+    public void updateDataSet(List<ParkingSlot> newParkingspaces) {
+        parkingspaces = newParkingspaces;
     }
 }

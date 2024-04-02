@@ -4,47 +4,57 @@ import java.time.LocalDateTime;
 
 public class Payment {
     // Primary key
-    private int Id;
-    private String Amount;
-    private LocalDateTime Time;
+    private String Id;
+    private Double Balance;
+    private String ValidationDate;
     // Foreign key -> Vehicle
-    private int VehicleId;
+    private int UserId;
 
-    public Payment(String amount, LocalDateTime time, int vehicleId) {
-        Amount = amount;
-        Time = time;
-        VehicleId = vehicleId;
+    public Payment() {
+
+    }
+    public Payment(String id, Double balance, String validationDate, int userId) {
+        Id = id;
+        Balance = balance;
+        ValidationDate = validationDate;
+        UserId = userId;
     }
 
-    public int getId() {
+    public Payment(Double balance, String validationDate, int userId) {
+        Balance = balance;
+        ValidationDate = validationDate;
+        UserId = userId;
+    }
+
+    public String getId() {
         return Id;
     }
 
-    public String getAmount() {
-        return Amount;
+    public Double getBalance() {
+        return Balance;
     }
 
-    public LocalDateTime getTime() {
-        return Time;
+    public String getValidationDate() {
+        return ValidationDate;
     }
 
-    public int getVehicleId() {
-        return VehicleId;
+    public int getUserId() {
+        return UserId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 
-    public void setAmount(String amount) {
-        Amount = amount;
+    public void setBalance(Double balance) {
+        Balance = balance;
     }
 
-    public void setTime(LocalDateTime time) {
-        Time = time;
+    public void setValidationDate(String validationDate) {
+        ValidationDate = validationDate;
     }
 
-    public void setVehicleId(int vehicleId) {
-        VehicleId = vehicleId;
+    public void setUserId(int userId) {
+        UserId = userId;
     }
 }
