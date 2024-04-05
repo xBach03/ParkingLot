@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
+import com.example.parkinglot.database.daos.HistoryManagerDao;
 import com.example.parkinglot.database.daos.PaymentDao;
 import com.example.parkinglot.database.daos.UserDao;
 import com.example.parkinglot.database.entities.AuthenticationManager;
@@ -54,9 +55,11 @@ public class RegisterActivity extends AppCompatActivity {
                 boolean check = userDao.insertUser(new User(username, confirmpassword));
                 if(password.equals(confirmpassword) && check) {
                     PaymentDao paymentDao = new PaymentDao(db);
+                    HistoryManagerDao historyDao = new HistoryManagerDao(db);
                     AuthenticationManager userManager = AuthenticationManager.getInstance(RegisterActivity.this);
                     userManager.loginUser(username, password);
                     paymentDao.generateOnCreate(userManager.getCurrentUser());
+                    historyDao.generateOnCreate(userManager.getCurrentUser());
                     Toast.makeText(RegisterActivity.this, "You have registered as " + username, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent();
                     i.setClass(RegisterActivity.this, MainActivity.class);

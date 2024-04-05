@@ -1,5 +1,6 @@
 package com.example.parkinglot.fragment;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,7 +32,7 @@ import java.time.LocalDateTime;
  * Use the {@link ReservationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReservationFragment extends Fragment implements TimePickerDialog.OnTimeSetListener {
+public class ReservationFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +47,8 @@ public class ReservationFragment extends Fragment implements TimePickerDialog.On
     private Button Reserver;
     private ParkingSlotDao parkDao;
     private ParkingAdapter parkingAdapter;
-    AuthenticationManager userManager;
+    private AuthenticationManager userManager;
+    private LocalDateTime startTime;
 
     public ReservationFragment() {
         // Required empty public constructor
@@ -78,14 +81,27 @@ public class ReservationFragment extends Fragment implements TimePickerDialog.On
         }
 
     }
+    private void showDatePicker() {
+        DatePickerFragment dateFragment = new DatePickerFragment();
+        dateFragment.setListener(ReservationFragment.this);
+        dateFragment.show(getParentFragmentManager(), "datePicker");
+    }
+    private void showTimePicker() {
+        TimePickerFragment timeFragment = new TimePickerFragment();
+        timeFragment.setListener(ReservationFragment.this);
+        timeFragment.show(getParentFragmentManager(), "timePicker");
+    }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        startTime = LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0);
+        showTimePicker();
+    }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime startTime = now.withHour(hourOfDay).withMinute(minute).withSecond(0).withNano(0);
+        startTime = startTime.withHour(hourOfDay).withMinute(minute).withSecond(0).withNano(0);
 
-        Toast.makeText(requireContext(), "Time selected: " + startTime, Toast.LENGTH_SHORT).show();
-
-        if(startTime != null) {
+        if(startTime != null && startTime.isAfter(LocalDateTime.now())) {
             userManager = AuthenticationManager.getInstance(requireContext());
             User current = userManager.getCurrentUser();
             int posId = parkingAdapter.getSelectedPosId();
@@ -101,6 +117,7 @@ public class ReservationFragment extends Fragment implements TimePickerDialog.On
             }
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -124,11 +141,7 @@ public class ReservationFragment extends Fragment implements TimePickerDialog.On
         Reserver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                TimePickerFragment newFragment = new TimePickerFragment();
-                newFragment.setListener(ReservationFragment.this);
-                newFragment.show(getParentFragmentManager(), "timePicker");
-
+                showDatePicker();
             }
         });
         return rootView;

@@ -5,13 +5,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkinglot.R;
 import com.example.parkinglot.database.entities.HistoryManager;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class ManagingAdapter extends RecyclerView.Adapter<ManagingAdapter.HistoryHolder> {
 
@@ -89,11 +93,33 @@ public class ManagingAdapter extends RecyclerView.Adapter<ManagingAdapter.Histor
 
     @Override
     public void onBindViewHolder(@NonNull HistoryHolder holder, int position) {
-        holder.getHistoryId().setText(history.get(position).getHistoryId());
+
+        // Set id
+        holder.getHistoryId().setText("ID: " + Integer.valueOf(history.get(position).getHistoryId()).toString());
+        // Set vehicle id
         holder.getVehicleId().setText(history.get(position).getVehicleId());
-        holder.getHistoryStart().setText(history.get(position).getStartTime().toString());
-        holder.getHistoryEnd().setText(history.get(position).getEndTime().toString());
-        holder.getTotalTime().setText(Integer.valueOf(history.get(position).getEndTime().getHour() - history.get(position).getStartTime().getHour()).toString());
+
+        // Get LocalDateTime
+        LocalDateTime startTime = history.get(position).getStartTime();
+        LocalDateTime endTime = history.get(position).getEndTime();
+        // Reformat time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm", Locale.ENGLISH);
+        String formattedStartTime = startTime.format(formatter);
+        String formattedEndTime = endTime.format(formatter);
+        // Set start and end time for recycler item
+        holder.getHistoryStart().setText("Start: " + formattedStartTime);
+        holder.getHistoryEnd().setText("End: " + formattedEndTime);
+
+        // Calculate total time
+        Duration duration = Duration.between(startTime, endTime);
+        long totalHours = duration.toHours();
+        long totalMinutes = duration.toMinutes() % 60;
+
+        // Format total hours and minutes
+        String formattedTime = String.format(Locale.ENGLISH, "%02d:%02d", totalHours, totalMinutes);
+
+
+        holder.getTotalTime().setText("Total time: " + formattedTime);
         holder.getMoneyPaid().setText(Double.valueOf(history.get(position).getMoneyPaid()).toString());
     }
 
