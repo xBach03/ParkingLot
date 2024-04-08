@@ -11,9 +11,18 @@ public class HistoryManager {
     // Foreign key -> User
     private int UserId;
     // Foreign key -> Vehicle
-    private int VehicleId;
+    private String VehicleId;
 
-    public HistoryManager(LocalDateTime startTime, LocalDateTime endTime, double moneyPaid, int userId, int vehicleId) {
+    public HistoryManager(int historyId, LocalDateTime startTime, LocalDateTime endTime, double moneyPaid, int userId, String vehicleId) {
+        HistoryId = historyId;
+        StartTime = startTime;
+        EndTime = endTime;
+        MoneyPaid = moneyPaid;
+        UserId = userId;
+        VehicleId = vehicleId;
+    }
+
+    public HistoryManager(LocalDateTime startTime, LocalDateTime endTime, double moneyPaid, int userId, String vehicleId) {
         StartTime = startTime;
         EndTime = endTime;
         MoneyPaid = moneyPaid;
@@ -41,7 +50,7 @@ public class HistoryManager {
         return UserId;
     }
 
-    public int getVehicleId() {
+    public String getVehicleId() {
         return VehicleId;
     }
 
@@ -65,7 +74,7 @@ public class HistoryManager {
         UserId = userId;
     }
 
-    public void setVehicleId(int vehicleId) {
+    public void setVehicleId(String vehicleId) {
         VehicleId = vehicleId;
     }
 }

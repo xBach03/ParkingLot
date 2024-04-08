@@ -23,11 +23,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/managerRecycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/manageTitle"
-            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             />
 
 

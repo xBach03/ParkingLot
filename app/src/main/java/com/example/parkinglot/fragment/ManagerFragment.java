@@ -1,14 +1,22 @@
 package com.example.parkinglot.fragment;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.parkinglot.R;
+import com.example.parkinglot.database.DatabaseHelper;
+import com.example.parkinglot.database.daos.HistoryManagerDao;
+import com.example.parkinglot.database.entities.AuthenticationManager;
+import com.example.parkinglot.recyclerComponents.ManagingAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +33,11 @@ public class ManagerFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
+    private HistoryManagerDao historyDao;
+    private ManagingAdapter managingAdapter;
 
     public ManagerFragment() {
         // Required empty public constructor
@@ -61,6 +74,22 @@ public class ManagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manager, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_manager, container, false);
+
+        AuthenticationManager userManager = AuthenticationManager.getInstance(requireContext());
+        dbHelper = DatabaseHelper.getInstance(requireContext());
+        db = dbHelper.getReadableDatabase();
+        historyDao = new HistoryManagerDao(db);
+        managingAdapter = new ManagingAdapter(historyDao.getAll(userManager.getCurrentUser()));
+
+        // Get recycler view
+        RecyclerView recyclerView = rootView.findViewById(R.id.managerRecycler);
+        recyclerView.setAdapter(managingAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        // Set linear layout for items in recycler view
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        return rootView;
     }
 }

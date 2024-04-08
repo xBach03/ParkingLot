@@ -48,7 +48,7 @@ public class ReservationDao {
                 do {
                     int id = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_ID));
                     String reservedTime = cursor.getString(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_RESERVEDTIME));
-                    String startTime = cursor.getString(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_RESERVEDTIME));
+                    String startTime = cursor.getString(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_STARTTIME));
                     LocalDateTime timeReservedConverted = LocalDateTime.parse(reservedTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                     LocalDateTime timeStartConverted = LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                     int userId = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_USERID));
