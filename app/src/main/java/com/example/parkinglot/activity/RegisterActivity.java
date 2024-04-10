@@ -52,20 +52,23 @@ public class RegisterActivity extends AppCompatActivity {
                 String confirmpassword = CfPasswordReg.getText().toString();
                 // Check if username already exists
                 UserDao userDao = new UserDao(db);
-                boolean check = userDao.insertUser(new User(username, confirmpassword));
-                if(password.equals(confirmpassword) && check) {
-                    PaymentDao paymentDao = new PaymentDao(db);
-                    HistoryManagerDao historyDao = new HistoryManagerDao(db);
-                    AuthenticationManager userManager = AuthenticationManager.getInstance(RegisterActivity.this);
-                    userManager.loginUser(username, password);
-                    paymentDao.generateOnCreate(userManager.getCurrentUser());
-                    historyDao.generateOnCreate(userManager.getCurrentUser());
-                    Toast.makeText(RegisterActivity.this, "You have registered as " + username, Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent();
-                    i.setClass(RegisterActivity.this, MainActivity.class);
-                    startActivity(i);
-                } else if(!check) {
-                    Toast.makeText(RegisterActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
+
+                if(password.equals(confirmpassword)) {
+                    boolean check = userDao.insertUser(new User(username, confirmpassword));
+                    if(check) {
+                        PaymentDao paymentDao = new PaymentDao(db);
+                        HistoryManagerDao historyDao = new HistoryManagerDao(db);
+                        AuthenticationManager userManager = AuthenticationManager.getInstance(RegisterActivity.this);
+                        userManager.loginUser(username, password);
+                        paymentDao.generateOnCreate(userManager.getCurrentUser());
+                        historyDao.generateOnCreate(userManager.getCurrentUser());
+                        Toast.makeText(RegisterActivity.this, "You have registered as " + username, Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent();
+                        i.setClass(RegisterActivity.this, MainActivity.class);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(RegisterActivity.this, "Confirmation password does not match original one", Toast.LENGTH_SHORT).show();
                 }

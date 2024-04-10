@@ -17,9 +17,12 @@ import android.widget.TextView;
 
 import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
+import com.example.parkinglot.database.daos.HistoryManagerDao;
 import com.example.parkinglot.database.daos.PaymentDao;
 import com.example.parkinglot.database.entities.AuthenticationManager;
 import com.example.parkinglot.database.entities.HistoryManager;
+import com.example.parkinglot.database.entities.User;
+import com.example.parkinglot.recyclerComponents.ManagingAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +41,8 @@ public class PaymentFragment extends Fragment {
     private String mParam2;
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
+    private HistoryManagerDao historyDao;
+    private ManagingAdapter managingAdapter;
 
     public PaymentFragment() {
         // Required empty public constructor
@@ -83,15 +88,20 @@ public class PaymentFragment extends Fragment {
 
         // Get current user to setting up card information
         AuthenticationManager userManager = AuthenticationManager.getInstance(requireContext());
+        User current = userManager.getCurrentUser();
 
         // Set debitOwner
         TextView debitOwner = rootView.findViewById(R.id.debitOwner);
-        debitOwner.setText(userManager.getCurrentUser().getUserName().toUpperCase());
+        debitOwner.setText(current.getUserName().toUpperCase());
 
         // Set debitId
         TextView debitId = rootView.findViewById(R.id.debitId);
         PaymentDao paymentDao = new PaymentDao(db);
-        debitId.setText(paymentDao.getCurrentPayment(userManager.getCurrentUser()).getId());
+        debitId.setText(paymentDao.getCurrentPayment(current).getId());
+
+        // Set balance
+        TextView balance = rootView.findViewById(R.id.balance);
+        balance.setText(paymentDao.getCurrentPayment(current).getBalance().toString() + "$");
 
         // Set onclick for history image button
         ImageButton history = rootView.findViewById(R.id.transHistory);
@@ -105,6 +115,13 @@ public class PaymentFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        dbHelper = DatabaseHelper.getInstance(requireContext());
+        db = dbHelper.getReadableDatabase();
+        historyDao = new HistoryManagerDao(db);
+        managingAdapter = new ManagingAdapter(historyDao.getAll(userManager.getCurrentUser()));
+
+
         return rootView;
     }
 }

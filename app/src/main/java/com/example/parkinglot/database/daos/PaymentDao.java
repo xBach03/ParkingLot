@@ -54,7 +54,7 @@ public class PaymentDao {
         ContentValues values = new ContentValues();
         values.put(PaymentEntry.PAYMENT_ID, generateRandomString());
         values.put(PaymentEntry.PAYMENT_BALANCE, random.nextInt());
-        values.put(PaymentEntry.PAYMENT_BALANCE, random.nextDouble() * 1000);
+        values.put(PaymentEntry.PAYMENT_BALANCE, Math.round(random.nextDouble() * 1000 * 100.0) / 100.0);
         values.put(PaymentEntry.PAYMENT_VALIDATIONDATE, "12/24");
         values.put(PaymentEntry.PAYMENT_USERID, user.getId());
 
