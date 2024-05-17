@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
+import com.example.parkinglot.fragment.CameraFragment;
 import com.example.parkinglot.fragment.ManagerFragment;
 import com.example.parkinglot.fragment.PaymentFragment;
 import com.example.parkinglot.R;
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     private Toolbar topBar;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_PERMISSIONS = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 topBar.setTitle("Payment");
                 LoadFragment(new PaymentFragment());
             } else if(id == R.id.camera) {
-                try {
-                    mTakePicture.launch(null);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Exception: " + e, Toast.LENGTH_SHORT).show();
-                }
+                topBar.setTitle("Number plate recognizer");
+                LoadFragment(new CameraFragment());
             } else {
                 LoadFragment(new StatisticsFragment());
                 topBar.setTitle("Statistic");
