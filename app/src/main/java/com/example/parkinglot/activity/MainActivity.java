@@ -1,9 +1,11 @@
 package com.example.parkinglot.activity;
 
 import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 LoadFragment(new PaymentFragment());
             } else if(id == R.id.camera) {
                 topBar.setTitle("Number plate recognizer");
+//                dispatchTakePictureIntent();
                 LoadFragment(new CameraFragment());
             } else {
                 LoadFragment(new StatisticsFragment());
@@ -81,4 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
+    }
 }

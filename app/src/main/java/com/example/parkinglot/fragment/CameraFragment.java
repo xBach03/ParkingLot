@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
@@ -25,8 +28,9 @@ public class CameraFragment extends Fragment {
 
     private static final int FILE_CHOOSER_RESULT_CODE = 1;
     private WebView webView;
-    private ValueCallback<Uri[]> uploadMessage;
+    private ValueCallback<Uri[]> upload;
     private String cameraPhotoPath;
+    private static final String url = "http://192.168.1.105:6868";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -40,15 +44,18 @@ public class CameraFragment extends Fragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void configureWebView() {
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://192.168.1.105:6868"); // Ensure your HTML file is in the assets folder
+        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setAllowFileAccessFromFileURLs(true);
+        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        webView.loadUrl(url); // Ensure your HTML file is in the assets folder
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                if (uploadMessage != null) {
-                    uploadMessage.onReceiveValue(null);
+                if (upload != null) {
+                    upload.onReceiveValue(null);
                 }
-                uploadMessage = filePathCallback;
+                upload = filePathCallback;
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -80,8 +87,12 @@ public class CameraFragment extends Fragment {
                 chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
                 chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+                try {
+                    startActivityForResult(chooserIntent, FILE_CHOOSER_RESULT_CODE);
+                } catch (Exception e) {
+                    Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                }
 
-                startActivityForResult(chooserIntent, FILE_CHOOSER_RESULT_CODE);
                 return true;
             }
         });
@@ -98,23 +109,28 @@ public class CameraFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILE_CHOOSER_RESULT_CODE) {
-            if (uploadMessage == null) return;
+            if (upload == null) return;
             Uri[] results = null;
             if (resultCode == getActivity().RESULT_OK) {
                 if (data == null || data.getData() == null) {
                     if (cameraPhotoPath != null) {
                         results = new Uri[]{Uri.parse(cameraPhotoPath)};
+                        sendImageToWebView(cameraPhotoPath);
                     }
                 } else {
                     String dataString = data.getDataString();
                     if (dataString != null) {
                         results = new Uri[]{Uri.parse(dataString)};
+                        sendImageToWebView(dataString);
                     }
                 }
             }
-            uploadMessage.onReceiveValue(results);
-            uploadMessage = null;
+            upload.onReceiveValue(results);
+            upload = null;
         }
     }
-}
 
+    private void sendImageToWebView(String imagePath) {
+        webView.evaluateJavascript("javascript:handleImage('" + imagePath + "')", null);
+    }
+}
