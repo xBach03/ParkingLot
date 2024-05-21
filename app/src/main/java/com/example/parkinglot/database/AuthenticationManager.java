@@ -1,11 +1,12 @@
-package com.example.parkinglot.database.entities;
+package com.example.parkinglot.database;
 
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.example.parkinglot.database.DatabaseHelper;
+
 import com.example.parkinglot.database.daos.UserDao;
+import com.example.parkinglot.database.entities.User;
 
 public class AuthenticationManager {
     private static AuthenticationManager instance;

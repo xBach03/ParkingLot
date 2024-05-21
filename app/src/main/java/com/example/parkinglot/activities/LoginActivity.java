@@ -1,4 +1,4 @@
-package com.example.parkinglot.activity;
+package com.example.parkinglot.activities;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.UserDao;
-import com.example.parkinglot.database.entities.AuthenticationManager;
+import com.example.parkinglot.database.AuthenticationManager;
 import com.example.parkinglot.database.entities.User;
 
 public class LoginActivity extends AppCompatActivity {

@@ -1,8 +1,10 @@
-package com.example.parkinglot.fragment;
+package com.example.parkinglot.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -12,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,8 +25,16 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import com.example.parkinglot.R;
+import com.example.parkinglot.activities.MainActivity;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class CameraFragment extends Fragment {
 
@@ -30,7 +42,8 @@ public class CameraFragment extends Fragment {
     private WebView webView;
     private ValueCallback<Uri[]> upload;
     private String cameraPhotoPath;
-    private static final String url = "http://192.168.1.105:6868";
+    private static final String HOME_URL = "http://192.168.1.105:6868";
+    private static final String GET_URL = "http://192.168.1.105:6868/get-license";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -46,8 +59,10 @@ public class CameraFragment extends Fragment {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setAllowFileAccessFromFileURLs(true);
+        webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        webView.loadUrl(url); // Ensure your HTML file is in the assets folder
+        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        webView.loadUrl(HOME_URL);
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -115,22 +130,76 @@ public class CameraFragment extends Fragment {
                 if (data == null || data.getData() == null) {
                     if (cameraPhotoPath != null) {
                         results = new Uri[]{Uri.parse(cameraPhotoPath)};
-                        sendImageToWebView(cameraPhotoPath);
+                        Log.d("result data == null ", results.toString());
                     }
                 } else {
                     String dataString = data.getDataString();
                     if (dataString != null) {
                         results = new Uri[]{Uri.parse(dataString)};
-                        sendImageToWebView(dataString);
+                        Log.d("result data != null ", results.toString());
                     }
                 }
             }
             upload.onReceiveValue(results);
             upload = null;
+//            new JsonTask().execute(GET_URL);
         }
     }
 
-    private void sendImageToWebView(String imagePath) {
-        webView.evaluateJavascript("javascript:handleImage('" + imagePath + "')", null);
+    private class JsonTask extends AsyncTask<String, String, String> {
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        protected String doInBackground(String[] params) {
+
+
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line+"\n");
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
+                }
+
+                return buffer.toString();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
     }
 }

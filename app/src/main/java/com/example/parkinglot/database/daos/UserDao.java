@@ -1,6 +1,7 @@
 package com.example.parkinglot.database.daos;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -78,5 +79,39 @@ public class UserDao {
         int check = cursor.getCount();
         cursor.close();
         return check > 0;
+    }
+    public String getUserName(int id) {
+        String userName = "";
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                UserEntry.USER_USERNAME,
+        };
+
+        // Filter results WHERE "title" = 'My Title'
+        String selection = UserEntry.USER_ID + " = ?";
+        String[] selectionArgs = { Integer.valueOf(id).toString() };
+
+        Cursor cursor = db.query(
+                UserEntry.TABLE_USER,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                null
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    userName = cursor.getString(cursor.getColumnIndexOrThrow(UserEntry.USER_USERNAME));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return userName;
     }
 }

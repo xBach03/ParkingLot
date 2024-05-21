@@ -1,4 +1,4 @@
-package com.example.parkinglot.activity;
+package com.example.parkinglot.activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -16,12 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import com.example.parkinglot.fragment.CameraFragment;
-import com.example.parkinglot.fragment.ManagerFragment;
-import com.example.parkinglot.fragment.PaymentFragment;
+import com.example.parkinglot.fragments.CameraFragment;
+import com.example.parkinglot.fragments.ManagerFragment;
+import com.example.parkinglot.fragments.PaymentFragment;
 import com.example.parkinglot.R;
-import com.example.parkinglot.fragment.ReservationFragment;
-import com.example.parkinglot.fragment.StatisticsFragment;
+import com.example.parkinglot.fragments.ReservationFragment;
+import com.example.parkinglot.fragments.StatisticsFragment;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

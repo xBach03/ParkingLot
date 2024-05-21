@@ -1,4 +1,4 @@
-package com.example.parkinglot.fragment;
+package com.example.parkinglot.fragments;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.view.ViewGroup;
 import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.HistoryManagerDao;
-import com.example.parkinglot.database.entities.AuthenticationManager;
+import com.example.parkinglot.database.AuthenticationManager;
 import com.example.parkinglot.recyclerComponents.ManagingAdapter;
 
 /**

@@ -9,6 +9,7 @@ import com.example.parkinglot.database.daos.HistoryManagerDao;
 import com.example.parkinglot.database.daos.ParkingSlotDao;
 import com.example.parkinglot.database.daos.PaymentDao;
 import com.example.parkinglot.database.daos.ReservationDao;
+import com.example.parkinglot.database.daos.TransactionDao;
 import com.example.parkinglot.database.daos.UserDao;
 import com.example.parkinglot.database.daos.VehicleDao;
 
@@ -25,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return instance;
     }
     public static final String DatabaseName = "LotParker";
-    public static final int DatabaseVersion = 21;
+    public static final int DatabaseVersion = 1;
 
     // Create user table string
     public static final String createTableUser = "CREATE TABLE " + UserDao.UserEntry.TABLE_USER + "( " +
@@ -80,12 +81,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             UserDao.UserEntry.TABLE_USER + "(" + UserDao.UserEntry.USER_ID + "), " +
             "FOREIGN KEY(" + HistoryManagerDao.HistoryEntry.HISTORY_VEHICLEID + ") REFERENCES " +
             VehicleDao.VehicleEntry.TABLE_VEHICLE + "(" + VehicleDao.VehicleEntry.VEHICLE_ID + "));";
+    public static final String createTableTransaction = "CREATE TABLE " + TransactionDao.TransactionEntry.TABLE_TRANSACTION + "( " +
+            TransactionDao.TransactionEntry.TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            TransactionDao.TransactionEntry.TRANSACTION_AMOUNT + " REAL, " +
+            TransactionDao.TransactionEntry.TRANSACTION_TIME + " TEXT, " +
+            TransactionDao.TransactionEntry.TRANSACTION_FROMUSER + " INTEGER, " +
+            TransactionDao.TransactionEntry.TRANSACTION_TOUSER + " INTEGER, " +
+            "FOREIGN KEY(" + TransactionDao.TransactionEntry.TRANSACTION_FROMUSER + ") REFERENCES " +
+            UserDao.UserEntry.TABLE_USER + "(" + UserDao.UserEntry.USER_ID + "), " +
+            "FOREIGN KEY(" + TransactionDao.TransactionEntry.TRANSACTION_TOUSER + ") REFERENCES " +
+            UserDao.UserEntry.TABLE_USER + "(" + UserDao.UserEntry.USER_ID + "));";
     public static final String deleteTableUser = "DROP TABLE IF EXISTS " + UserDao.UserEntry.TABLE_USER;
     public static final String deleteTableVehicle = "DROP TABLE IF EXISTS " + VehicleDao.VehicleEntry.TABLE_VEHICLE;
     public static final String deleteTableReservation = "DROP TABLE IF EXISTS " + ReservationDao.ReservationEntry.TABLE_RESERVATION;
     public static final String deleteTablePayment = "DROP TABLE IF EXISTS " + PaymentDao.PaymentEntry.TABLE_PAYMENT;
     public static final String deleteTableParkingSpace = "DROP TABLE IF EXISTS " + ParkingSlotDao.ParkingEntry.TABLE_PARKING;
     public static final String deleteTableHistory = "DROP TABLE IF EXISTS " + HistoryManagerDao.HistoryEntry.TABLE_HISTORY;
+    public static final String deleteTableTransaction = "DROP TABLE IF EXISTS " + TransactionDao.TransactionEntry.TABLE_TRANSACTION;
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -95,6 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(deleteTableReservation);
         db.execSQL(deleteTablePayment);
         db.execSQL(deleteTableHistory);
+        db.execSQL(deleteTableTransaction);
         onCreate(db);
     }
 
@@ -107,6 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableReservation);
         db.execSQL(createTablePayment);
         db.execSQL(createTableHistory);
+        db.execSQL(createTableTransaction);
         ParkingSlotDao parker = new ParkingSlotDao(db);
         long result = parker.insertParkingspace();
     }

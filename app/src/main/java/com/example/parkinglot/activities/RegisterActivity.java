@@ -1,4 +1,4 @@
-package com.example.parkinglot.activity;
+package com.example.parkinglot.activities;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,8 +16,7 @@ import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.HistoryManagerDao;
 import com.example.parkinglot.database.daos.PaymentDao;
 import com.example.parkinglot.database.daos.UserDao;
-import com.example.parkinglot.database.entities.AuthenticationManager;
-import com.example.parkinglot.database.entities.Payment;
+import com.example.parkinglot.database.AuthenticationManager;
 import com.example.parkinglot.database.entities.User;
 
 public class RegisterActivity extends AppCompatActivity {

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.PaymentFragment">
+    tools:context=".fragments.PaymentFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -136,9 +136,10 @@
             android:textColor="@color/white"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="@id/debitBg"
+            app:layout_constraintTop_toTopOf="@+id/debitBg"
             app:layout_constraintEnd_toEndOf="@id/debitBg"
             app:layout_constraintStart_toStartOf="@id/debitTitle"
-            app:layout_constraintTop_toTopOf="@+id/debitBg" />
+             />
 
         <ImageView
             android:id="@+id/mastercard"

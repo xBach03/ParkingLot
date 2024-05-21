@@ -1,4 +1,4 @@
-package com.example.parkinglot.fragment;
+package com.example.parkinglot.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -21,7 +21,7 @@ import com.example.parkinglot.R;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.ParkingSlotDao;
 import com.example.parkinglot.database.daos.ReservationDao;
-import com.example.parkinglot.database.entities.AuthenticationManager;
+import com.example.parkinglot.database.AuthenticationManager;
 import com.example.parkinglot.database.entities.User;
 import com.example.parkinglot.recyclerComponents.ParkingAdapter;
 

@@ -1,4 +1,4 @@
-package com.example.parkinglot.fragment;
+package com.example.parkinglot.fragments;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;

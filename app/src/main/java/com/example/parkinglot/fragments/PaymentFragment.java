@@ -1,4 +1,4 @@
-package com.example.parkinglot.fragment;
+package com.example.parkinglot.fragments;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.parkinglot.R;
+import com.example.parkinglot.activities.TransactionActivity;
 import com.example.parkinglot.database.DatabaseHelper;
 import com.example.parkinglot.database.daos.HistoryManagerDao;
 import com.example.parkinglot.database.daos.PaymentDao;
-import com.example.parkinglot.database.entities.AuthenticationManager;
-import com.example.parkinglot.database.entities.HistoryManager;
+import com.example.parkinglot.database.AuthenticationManager;
 import com.example.parkinglot.database.entities.User;
 import com.example.parkinglot.recyclerComponents.ManagingAdapter;
 
@@ -42,6 +41,7 @@ public class PaymentFragment extends Fragment {
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
     private HistoryManagerDao historyDao;
+    private ImageButton transaction, history, deposit;
     private ManagingAdapter managingAdapter;
 
     public PaymentFragment() {
@@ -104,7 +104,7 @@ public class PaymentFragment extends Fragment {
         balance.setText(paymentDao.getCurrentPayment(current).getBalance().toString() + "$");
 
         // Set onclick for history image button
-        ImageButton history = rootView.findViewById(R.id.transHistory);
+        history = rootView.findViewById(R.id.transHistory);
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +113,15 @@ public class PaymentFragment extends Fragment {
                 transaction.setReorderingAllowed(true);
                 transaction.replace(R.id.fragment_container_view, ManagerFragment.class, null);
                 transaction.commit();
+            }
+        });
+
+        transaction = rootView.findViewById(R.id.transaction);
+        transaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(requireContext(), TransactionActivity.class);
+                startActivity(i);
             }
         });
 
