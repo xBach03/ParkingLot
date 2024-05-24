@@ -97,7 +97,18 @@ public class PaymentFragment extends Fragment {
         // Set debitId
         TextView debitId = rootView.findViewById(R.id.debitId);
         PaymentDao paymentDao = new PaymentDao(db);
-        debitId.setText(paymentDao.getCurrentPayment(current).getId());
+
+        StringBuilder paymentId = new StringBuilder();
+        String currentPaymentId = paymentDao.getCurrentPayment(current).getId().replaceAll("\\s+", "");
+        int s = 0;
+        for(int i = 0; i < 16; i++) {
+            paymentId.append(currentPaymentId.charAt(s));
+            s++;
+            if ((i + 1) % 4 == 0 && i != 15) {
+                paymentId.append("   ");
+            }
+        }
+        debitId.setText(paymentId.toString());
 
         // Set balance
         TextView balance = rootView.findViewById(R.id.balance);

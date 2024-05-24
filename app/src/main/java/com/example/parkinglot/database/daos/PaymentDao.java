@@ -40,7 +40,7 @@ public class PaymentDao {
 
             // Insert a space after every group of 4 digits
             if ((i + 1) % 4 == 0 && i != 15) {
-                stringBuilder.append("   ");
+                stringBuilder.append(" ");
             }
         }
 
@@ -104,10 +104,11 @@ public class PaymentDao {
         }
         return payment;
     }
-    public Payment transactById(String id, Double amount) {
-        Payment payment = new Payment();
+    public Payment transactById(String toId, String fromId, Double amount) {
+        // Query destination user's payment
+        Payment toPayment = new Payment();
         // Query all columns from payment table
-        String[] projection = {
+        String[] toProjection = {
                 PaymentEntry.PAYMENT_ID,
                 PaymentEntry.PAYMENT_BALANCE,
                 PaymentEntry.PAYMENT_VALIDATIONDATE,
@@ -115,50 +116,97 @@ public class PaymentDao {
         };
 
         // Filter results WHERE "title" = 'My Title'
-        String querySelection = PaymentEntry.PAYMENT_ID + " = ?";
-        String[] querySelectionArgs = { id };
+        String toQuerySelection = PaymentEntry.PAYMENT_ID + " = ?";
+        String[] toQuerySelectionArgs = { toId };
 
-        Cursor cursor = db.query(
+        Cursor toCursor = db.query(
                 PaymentEntry.TABLE_PAYMENT,   // The table to query
-                projection,             // The array of columns to return (pass null to get all)
-                querySelection,              // The columns for the WHERE clause
-                querySelectionArgs,          // The values for the WHERE clause
+                toProjection,             // The array of columns to return (pass null to get all)
+                toQuerySelection,              // The columns for the WHERE clause
+                toQuerySelectionArgs,          // The values for the WHERE clause
                 null,                   // don't group the rows
                 null,                   // don't filter by row groups
                 null              // The sort order
         );
         try {
-            if (cursor != null && cursor.moveToFirst()) {
+            if (toCursor != null && toCursor.moveToFirst()) {
                 do {
-                    String paymentId = cursor.getString(cursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_ID));
-                    int userId = cursor.getInt(cursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_USERID));
-                    double balance = cursor.getDouble(cursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_BALANCE));
-                    String validDate = cursor.getString(cursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_VALIDATIONDATE));
-                    payment.setId(paymentId);
-                    payment.setUserId(userId);
-                    payment.setBalance(balance);
-                    payment.setValidationDate(validDate);
-                } while (cursor.moveToNext());
+                    String paymentId = toCursor.getString(toCursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_ID));
+                    int userId = toCursor.getInt(toCursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_USERID));
+                    double balance = toCursor.getDouble(toCursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_BALANCE));
+                    String validDate = toCursor.getString(toCursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_VALIDATIONDATE));
+                    toPayment.setId(paymentId);
+                    toPayment.setUserId(userId);
+                    toPayment.setBalance(balance);
+                    toPayment.setValidationDate(validDate);
+                } while (toCursor.moveToNext());
             }
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (toCursor != null) {
+                toCursor.close();
             }
         }
 
-        payment.setBalance(payment.getBalance() + amount);
-        ContentValues values = new ContentValues();
-        values.put(PaymentEntry.PAYMENT_BALANCE, payment.getBalance());
+        toPayment.setBalance(toPayment.getBalance() + amount);
+
+        ContentValues toValues = new ContentValues();
+
+        // Update toUser balance
+        toValues.put(PaymentEntry.PAYMENT_BALANCE, toPayment.getBalance());
+
+        // Which row to update, based on the title
+        String toUpdateSelection = PaymentEntry.PAYMENT_ID + " = ?";
+        String[] toUpdateSelectionArgs = { toId };
+
+        int toCount = db.update(
+                PaymentEntry.TABLE_PAYMENT,
+                toValues,
+                toUpdateSelection,
+                toUpdateSelectionArgs);
+
+        // Update for fromUser
+        String[] fromProjection = {
+                PaymentEntry.PAYMENT_BALANCE
+        };
+        // Query the fromUser's ID
+        String fromQuerySelection = PaymentEntry.PAYMENT_ID + " = ?";
+        String[] fromQuerySelectionArgs = { fromId };
+
+        Cursor fromCursor = db.query(
+                PaymentEntry.TABLE_PAYMENT,   // The table to query
+                fromProjection,             // The array of columns to return (pass null to get all)
+                fromQuerySelection,              // The columns for the WHERE clause
+                fromQuerySelectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                null              // The sort order
+        );
+        double balance = 0;
+        try {
+            if (fromCursor != null && fromCursor.moveToFirst()) {
+                do {
+                    balance = fromCursor.getDouble(fromCursor.getColumnIndexOrThrow(PaymentEntry.PAYMENT_BALANCE));
+                } while (fromCursor.moveToNext());
+            }
+        } finally {
+            if (fromCursor != null) {
+                fromCursor.close();
+            }
+        }
+
+        ContentValues fromValues = new ContentValues();
+        // Update fromUser balance
+        fromValues.put(PaymentEntry.PAYMENT_BALANCE, balance - amount);
 
         // Which row to update, based on the title
         String updateSelection = PaymentEntry.PAYMENT_ID + " = ?";
-        String[] updateSelectionArgs = { id };
+        String[] updateSelectionArgs = { fromId };
 
-        int count = db.update(
+        int fromCount = db.update(
                 PaymentEntry.TABLE_PAYMENT,
-                values,
+                fromValues,
                 updateSelection,
                 updateSelectionArgs);
-        return payment;
+        return toPayment;
     }
 }

@@ -47,16 +47,25 @@ public class TransactionActivity extends AppCompatActivity {
                 moneyTransact = findViewById(R.id.moneyTransact);
                 dbHelper = DatabaseHelper.getInstance(TransactionActivity.this);
                 db = dbHelper.getWritableDatabase();
+
+                String debitInput = debitIdInputTransact.getText().toString();
+                String moneyInput = moneyTransact.getText().toString();
+                // Modify destination user's payment balance
                 PaymentDao paymentDao = new PaymentDao(db);
-                Payment transactPayment = paymentDao.transactById(debitIdInputTransact.toString(), Double.valueOf(moneyTransact.toString()));
+                Payment transactPayment = paymentDao.transactById(debitInput, paymentDao.getCurrentPayment(authenticationManager.getCurrentUser()).getId(), Double.valueOf(moneyInput));
+
+                // Insert new transaction
                 TransactionDao transactionDao = new TransactionDao(db);
-                boolean transactor = transactionDao.insertTransaction(paymentDao.getCurrentPayment(authenticationManager.getCurrentUser()).getId(), debitIdInputTransact.toString(), Double.parseDouble(moneyTransact.toString()));
-                if(transactPayment != null && transactor) {
+                long transactor = transactionDao.insertTransaction(paymentDao.getCurrentPayment(authenticationManager.getCurrentUser()).getId(), debitInput, Double.parseDouble(moneyInput));
+                if(transactPayment != null && transactor != -1) {
                     UserDao userDao = new UserDao(db);
                     Intent i = new Intent(TransactionActivity.this, TransactionSuccessActivity.class);
-                    i.putExtra("transactAmount", moneyTransact.toString());
-                    i.putExtra("userId", debitIdInputTransact.toString());
+
+                    // Pass data to TransactionSuccessActivity
+                    i.putExtra("transactAmount", moneyInput);
+                    i.putExtra("userId", debitInput);
                     i.putExtra("userName", userDao.getUserName(transactPayment.getUserId()));
+                    i.putExtra("transactId", transactor);
                     startActivity(i);
                 } else {
                     Toast.makeText(TransactionActivity.this, "Transaction failed", Toast.LENGTH_SHORT).show();

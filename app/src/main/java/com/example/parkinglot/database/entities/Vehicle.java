@@ -8,6 +8,11 @@ public class Vehicle {
     // Foreign key -> User
     private int UserId;
 
+    public Vehicle(String licensePlate, int userId) {
+        LicensePlate = licensePlate;
+        UserId = userId;
+    }
+
     public Vehicle(String licensePlate, String type, String color, int userId) {
         LicensePlate = licensePlate;
         Type = type;

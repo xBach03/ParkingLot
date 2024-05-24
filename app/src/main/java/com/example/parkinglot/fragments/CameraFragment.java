@@ -3,10 +3,10 @@ package com.example.parkinglot.fragments;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,18 +17,20 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import com.example.parkinglot.R;
-import com.example.parkinglot.activities.MainActivity;
+import com.example.parkinglot.database.AuthenticationManager;
+import com.example.parkinglot.database.DatabaseHelper;
+import com.example.parkinglot.database.daos.VehicleDao;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,7 +43,9 @@ public class CameraFragment extends Fragment {
     private static final int FILE_CHOOSER_RESULT_CODE = 1;
     private WebView webView;
     private ValueCallback<Uri[]> upload;
-    private String cameraPhotoPath;
+    private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
+    private AuthenticationManager authenticationManager;
     private static final String HOME_URL = "http://192.168.1.105:6868";
     private static final String GET_URL = "http://192.168.1.105:6868/get-license";
 
@@ -56,12 +60,14 @@ public class CameraFragment extends Fragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void configureWebView() {
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setAllowFileAccessFromFileURLs(true);
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
+        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         webView.loadUrl(HOME_URL);
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
@@ -73,20 +79,6 @@ public class CameraFragment extends Fragment {
                 upload = filePathCallback;
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    if (photoFile != null) {
-                        cameraPhotoPath = "file:" + photoFile.getAbsolutePath();
-                        Uri photoURI = FileProvider.getUriForFile(getContext(), "com.example.parkinglot.fileprovider", photoFile);
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    }
-                }
-
                 Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
                 contentSelectionIntent.setType("image/*");
@@ -113,13 +105,6 @@ public class CameraFragment extends Fragment {
         });
     }
 
-    private File createImageFile() throws IOException {
-        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
-        return imageFile;
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -127,31 +112,104 @@ public class CameraFragment extends Fragment {
             if (upload == null) return;
             Uri[] results = null;
             if (resultCode == getActivity().RESULT_OK) {
-                if (data == null || data.getData() == null) {
-                    if (cameraPhotoPath != null) {
-                        results = new Uri[]{Uri.parse(cameraPhotoPath)};
-                        Log.d("result data == null ", results.toString());
-                    }
-                } else {
-                    String dataString = data.getDataString();
-                    if (dataString != null) {
-                        results = new Uri[]{Uri.parse(dataString)};
-                        Log.d("result data != null ", results.toString());
-                    }
+                String dataString = data.getDataString();
+                if (dataString != null) {
+                    results = new Uri[]{Uri.parse(dataString)};
                 }
             }
             upload.onReceiveValue(results);
             upload = null;
-//            new JsonTask().execute(GET_URL);
+            if (results != null && results.length > 0) {
+                new UploadTask().execute(GET_URL);
+            }
         }
     }
+    private class UploadTask extends AsyncTask<String, Void, Boolean> {
+        private ProgressDialog progressDialog;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(getActivity(), "Processing Image", "Please wait...", true);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            String url = params[0];
+            boolean isProcessingComplete = false;
+            try {
+                while (!isProcessingComplete) {
+                    isProcessingComplete = checkProcessingStatus(url);
+                    if (!isProcessingComplete) {
+                        Thread.sleep(2000); // Poll every 2 seconds
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isProcessingComplete) {
+            super.onPostExecute(isProcessingComplete);
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+
+            if (isProcessingComplete) {
+                new JsonTask().execute(GET_URL);
+            } else {
+                Toast.makeText(getActivity(), "License plate processing failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private boolean checkProcessingStatus(String url) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL statusUrl = new URL(url);
+                connection = (HttpURLConnection) statusUrl.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+
+                InputStream stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder buffer = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line).append("\n");
+                }
+                String response = buffer.toString();
+                Log.d("UploadTask", "Response: " + response);
+
+                JSONObject jsonResponse = new JSONObject(response);
+                String status = jsonResponse.getString("status");
+                return "success".equals(status);
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        }
+    }
     private class JsonTask extends AsyncTask<String, String, String> {
         protected void onPreExecute() {
             super.onPreExecute();
         }
         protected String doInBackground(String[] params) {
-
 
             HttpURLConnection connection = null;
             BufferedReader reader = null;
@@ -167,17 +225,13 @@ public class CameraFragment extends Fragment {
                 reader = new BufferedReader(new InputStreamReader(stream));
 
                 StringBuffer buffer = new StringBuffer();
-                String line = "";
 
+                String line;
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
+                    buffer.append(line).append("\n");
+                    Log.d("Response: ", "> " + line);
                 }
-
                 return buffer.toString();
-
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -200,6 +254,26 @@ public class CameraFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            // Check if the result is not null
+            if (result != null) {
+                // Handle the result here, for example, you can parse the JSON response
+                // and update your UI accordingly
+                try {
+                    JSONObject jsonResponse = new JSONObject(result);
+                    // Extract data from the JSON object as needed
+                    String licensePlateContent = jsonResponse.getString("licensePlateContent");
+                    // Update database
+                    authenticationManager = AuthenticationManager.getInstance(requireContext());
+                    dbHelper = DatabaseHelper.getInstance(requireContext());
+                    db = dbHelper.getWritableDatabase();
+                    VehicleDao vehicleDao = new VehicleDao(db);
+                    vehicleDao.scanPlate(licensePlateContent, authenticationManager.getCurrentUser().getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("Null result", "something gone wrong");
+            }
         }
     }
 }

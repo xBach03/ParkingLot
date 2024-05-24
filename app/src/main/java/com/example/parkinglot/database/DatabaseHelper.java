@@ -111,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Oncreate -> create table user
+    // Oncreate -> create database
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createTableUser);
@@ -124,8 +124,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ParkingSlotDao parker = new ParkingSlotDao(db);
         long result = parker.insertParkingspace();
     }
-    public void setDeleteTableUser(SQLiteDatabase db){
-        db.execSQL(deleteTableUser);
-    }
-
 }

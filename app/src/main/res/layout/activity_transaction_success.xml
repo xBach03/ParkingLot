@@ -6,5 +6,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.TransactionSuccessActivity">
+    <View
+        android:id="@+id/transactionTick"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/transaction_tick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:id="@+id/transactionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/transactionTick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Transaction Successful!"
+        android:textSize="25dp"
+        />
+    <TextView
+        android:id="@+id/transactionId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/transactionTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="Transaction ID: 1"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:id="@+id/transactionUserId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/transactionId"
+        android:text="To user: 0000 0000 0000 0000"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:id="@+id/transactionUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/transactionUserId"
+        android:text="User name: DANGXUANBACH"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:id="@+id/transactionAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/transactionUserName"
+        android:text="Amount: 1000$"
+        android:textSize="20dp"
+        />
+
+    <Button
+        android:id="@+id/navigateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/transactionAmount"
+        android:layout_marginTop="20dp"
+        android:text="Home page"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
