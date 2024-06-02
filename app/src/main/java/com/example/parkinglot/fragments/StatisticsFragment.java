@@ -42,7 +42,6 @@ public class StatisticsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
 
     public StatisticsFragment() {
@@ -94,8 +93,7 @@ public class StatisticsFragment extends Fragment {
         BarChart barChart = rootView.findViewById(R.id.barChart);
         barChart.getAxisRight().setDrawLabels(false);
 
-        dbHelper = DatabaseHelper.getInstance(requireContext());
-        db = dbHelper.getWritableDatabase();
+        db = DatabaseHelper.getInstance(requireContext()).getWritableDatabase();
         ParkingSlotDao parkingDao = new ParkingSlotDao(db);
 
         // Query for all type of slots

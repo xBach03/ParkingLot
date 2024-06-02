@@ -43,7 +43,6 @@ public class CameraFragment extends Fragment {
     private static final int FILE_CHOOSER_RESULT_CODE = 1;
     private WebView webView;
     private ValueCallback<Uri[]> upload;
-    private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private AuthenticationManager authenticationManager;
     private static final String HOME_URL = "http://192.168.1.105:6868";
@@ -264,8 +263,7 @@ public class CameraFragment extends Fragment {
                     String licensePlateContent = jsonResponse.getString("licensePlateContent");
                     // Update database
                     authenticationManager = AuthenticationManager.getInstance(requireContext());
-                    dbHelper = DatabaseHelper.getInstance(requireContext());
-                    db = dbHelper.getWritableDatabase();
+                    db = DatabaseHelper.getInstance(requireContext()).getWritableDatabase();
                     VehicleDao vehicleDao = new VehicleDao(db);
                     vehicleDao.scanPlate(licensePlateContent, authenticationManager.getCurrentUser().getId());
                 } catch (JSONException e) {

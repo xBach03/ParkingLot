@@ -39,7 +39,6 @@ public class PaymentFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private SQLiteDatabase db;
-    private DatabaseHelper dbHelper;
     private HistoryManagerDao historyDao;
     private ImageButton transaction, history, deposit;
     private ManagingAdapter managingAdapter;
@@ -83,8 +82,7 @@ public class PaymentFragment extends Fragment {
         // Find the TextView within the inflated layout
 //        RecyclerView recyclerView = rootView.findViewById(R.id.parkingRecycler);
 
-        dbHelper = DatabaseHelper.getInstance(requireContext());
-        db = dbHelper.getWritableDatabase();
+        db = DatabaseHelper.getInstance(requireContext()).getWritableDatabase();
 
         // Get current user to setting up card information
         AuthenticationManager userManager = AuthenticationManager.getInstance(requireContext());
@@ -136,8 +134,6 @@ public class PaymentFragment extends Fragment {
             }
         });
 
-        dbHelper = DatabaseHelper.getInstance(requireContext());
-        db = dbHelper.getReadableDatabase();
         historyDao = new HistoryManagerDao(db);
         managingAdapter = new ManagingAdapter(historyDao.getAll(userManager.getCurrentUser()));
 

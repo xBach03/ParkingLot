@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
 import com.example.parkinglot.database.entities.Reservation;
 import com.example.parkinglot.database.entities.User;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -77,5 +78,52 @@ public class ReservationDao {
         long newRowId = db.insert(ReservationEntry.TABLE_RESERVATION, null, values);
 
         return newRowId != -1;
+    }
+
+    public Reservation getCurrentDayReservation(User current) {
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                ReservationEntry.RESERVATION_ID,
+                ReservationEntry.RESERVATION_PARKINGID,
+                ReservationEntry.RESERVATION_RESERVEDTIME,
+                ReservationEntry.RESERVATION_STARTTIME
+        };
+
+        // Filter results WHERE "title" = 'My Title'
+        String selection = ReservationEntry.RESERVATION_USERID + " = ? ";
+        String[] selectionArgs = { Integer.valueOf(current.getId()).toString() };
+
+
+        Cursor cursor = db.query(
+                ReservationEntry.TABLE_RESERVATION,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                null               // The sort order
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String startTime = cursor.getString(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_STARTTIME));
+                    if(LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME).toLocalDate().equals(LocalDate.now())) {
+                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_ID));
+                        LocalDateTime startTimeConverted = LocalDateTime.parse(startTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        String reservedTime = cursor.getString(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_RESERVEDTIME));
+                        LocalDateTime timeReservedConverted = LocalDateTime.parse(reservedTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        int parkingId = cursor.getInt(cursor.getColumnIndexOrThrow(ReservationEntry.RESERVATION_PARKINGID));
+                        return new Reservation(id, timeReservedConverted, startTimeConverted, parkingId);
+                    }
+
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
     }
 }

@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import androidx.webkit.internal.ApiFeature;
+
 import com.example.parkinglot.database.entities.ParkingSlot;
 
 import java.util.ArrayList;
@@ -231,5 +233,43 @@ public class ParkingSlotDao {
                 selectionArgs);
         return row != 0;
     }
+    public ParkingSlot getReservedArea(int id) {
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                ParkingEntry.PARKING_AREA,
+                ParkingEntry.PARKING_VEHICLETYPE,
+                ParkingEntry.PARKING_SPOT
+        };
 
+        // Filter results WHERE "title" = 'My Title'
+        String selection = ParkingEntry.PARKING_ID + " = ?";
+        String[] selectionArgs = { Integer.valueOf(id).toString() };
+
+
+        Cursor cursor = db.query(
+                ParkingEntry.TABLE_PARKING,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                null
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String parkingArea = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_AREA));
+                    String vehicleType = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_VEHICLETYPE));
+                    String parkingSpot = cursor.getString(cursor.getColumnIndexOrThrow(ParkingEntry.PARKING_SPOT));
+                    return new ParkingSlot(vehicleType, parkingSpot, parkingArea);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
 }

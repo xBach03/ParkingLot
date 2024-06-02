@@ -120,7 +120,7 @@ public class ManagingAdapter extends RecyclerView.Adapter<ManagingAdapter.Histor
 
 
         holder.getTotalTime().setText("Total time: " + formattedTime);
-        holder.getMoneyPaid().setText(Double.valueOf(history.get(position).getMoneyPaid()).toString());
+        holder.getMoneyPaid().setText(Double.valueOf(history.get(position).getMoneyPaid()).toString() + "$");
     }
 
     @Override

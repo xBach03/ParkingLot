@@ -26,6 +26,12 @@ public class ParkingSlot {
         ParkingSpot = parkingSpot;
     }
 
+    public ParkingSlot(String vehicleType, String parkingSpot, String area) {
+        VehicleType = vehicleType;
+        ParkingSpot = parkingSpot;
+        Area = area;
+    }
+
     public int getParkingId() {
         return ParkingId;
     }

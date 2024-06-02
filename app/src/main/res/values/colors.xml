@@ -8,4 +8,7 @@
     <color name="thirdPurple">#83C0C1</color>
     <color name="fourthPurple">#96E9C6</color>
     <color name="navigationColor">#8E7AB5</color>
+    <color name="gray">#686D76</color>
+    <color name="setBtn">#BFACE2</color>
+    <color name="defaultBg">#FEF7FF</color>
 </resources>

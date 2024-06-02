@@ -1,5 +1,6 @@
 package com.example.parkinglot.fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -67,7 +68,7 @@ public class TimePickerFragment extends DialogFragment {
         int minute = now.getMinute();
 
         // Create a new instance of TimePickerDialog and return it
-        return new TimePickerDialog(getActivity(), mListener, hour, minute, true);
+        return new TimePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, mListener, hour, minute, true);
     }
 
     @Override

@@ -9,14 +9,21 @@ public class Reservation {
     private LocalDateTime startTime;
     // Foreign key -> User
     private int UserId;
-    // Foreign key -> Parkingspace
+    // Foreign key -> ParkingSlot
     private int ParkingId;
-
+    public Reservation(){}
     public Reservation(int reservationId, LocalDateTime reservedTime, LocalDateTime startTime, int userId, int parkingId) {
         ReservationId = reservationId;
         this.reservedTime = reservedTime;
         this.startTime = startTime;
         UserId = userId;
+        ParkingId = parkingId;
+    }
+
+    public Reservation(int reservationId, LocalDateTime reservedTime, LocalDateTime startTime, int parkingId) {
+        ReservationId = reservationId;
+        this.reservedTime = reservedTime;
+        this.startTime = startTime;
         ParkingId = parkingId;
     }
 

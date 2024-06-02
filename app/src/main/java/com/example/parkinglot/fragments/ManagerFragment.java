@@ -33,7 +33,6 @@ public class ManagerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private HistoryManagerDao historyDao;
     private ManagingAdapter managingAdapter;
@@ -76,8 +75,7 @@ public class ManagerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_manager, container, false);
 
         AuthenticationManager userManager = AuthenticationManager.getInstance(requireContext());
-        dbHelper = DatabaseHelper.getInstance(requireContext());
-        db = dbHelper.getReadableDatabase();
+        db = DatabaseHelper.getInstance(requireContext()).getReadableDatabase();
         historyDao = new HistoryManagerDao(db);
         managingAdapter = new ManagingAdapter(historyDao.getAll(userManager.getCurrentUser()));
 
