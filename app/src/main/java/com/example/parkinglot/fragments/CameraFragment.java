@@ -45,8 +45,8 @@ public class CameraFragment extends Fragment {
     private ValueCallback<Uri[]> upload;
     private SQLiteDatabase db;
     private AuthenticationManager authenticationManager;
-    private static final String HOME_URL = "http://192.168.1.105:6868";
-    private static final String GET_URL = "http://192.168.1.105:6868/get-license";
+    private static final String HOME_URL = "http://192.168.100.138:6868";
+    private static final String GET_URL = "http://192.168.100.138:6868/get-license";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
